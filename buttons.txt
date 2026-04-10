@@ -1,0 +1,69 @@
+ATTRS: {'class': 'header-hamburger-btn', 'aria-label': 'Toggle Sidebar'} TEXT: 
+ATTRS: {'class': 'header-icon-btn header-search-mobile', 'aria-label': 'Search'} TEXT: 
+ATTRS: {'class': 'header-icon-btn notification-btn', 'aria-label': 'Notifications'} TEXT: 50
+ATTRS: {'class': 'header-app-selection-btn', 'aria-label': 'Select Application', 'aria-expanded': 'false', 'type': 'button'} TEXT: 
+ATTRS: {'class': 'sidebar-edge-toggle', 'aria-label': 'Collapse sidebar'} TEXT: 
+ATTRS: {'class': 'close-button-drawer'} TEXT: 
+ATTRS: {'class': 'nav-link z-50  leftActive ', 'id': 'summary-tab', 'data-bs-toggle': 'tab', 'data-bs-target': '#summary', 'type': 'button', 'role': 'tab', 'aria-controls': 'summary', 'aria-selected': 'false', 'tabindex': '-1'} TEXT: Patient Details
+ATTRS: {'class': 'nav-link z-50 active  ', 'id': 'lab-results-tab', 'data-bs-toggle': 'tab', 'data-bs-target': '#lab-results', 'type': 'button', 'role': 'tab', 'aria-controls': 'lab-results', 'aria-selected': 'true'} TEXT: Lab Record Results
+ATTRS: {'class': 'nav-link z-50   rightActive', 'id': 'providers-tab', 'data-bs-toggle': 'tab', 'data-bs-target': '#providers', 'type': 'button', 'role': 'tab', 'aria-controls': 'providers', 'aria-selected': 'false', 'tabindex': '-1'} TEXT: Medical Providers & Bills
+ATTRS: {'class': 'nav-link z-50   ', 'id': 'injuries-tab', 'data-bs-toggle': 'tab', 'data-bs-target': '#injuries', 'type': 'button', 'role': 'tab', 'aria-controls': 'injuries', 'aria-selected': 'false', 'tabindex': '-1'} TEXT: Injuries & Treatment
+ATTRS: {'class': 'nav-link z-50   ', 'id': 'imaging-tab', 'data-bs-toggle': 'tab', 'data-bs-target': '#imaging', 'type': 'button', 'role': 'tab', 'aria-controls': 'imaging', 'aria-selected': 'false', 'tabindex': '-1'} TEXT: Imaging Results
+ATTRS: {'class': 'nav-link z-50   ', 'id': 'surgical-tab', 'data-bs-toggle': 'tab', 'data-bs-target': '#surgical', 'type': 'button', 'role': 'tab', 'aria-controls': 'surgical', 'aria-selected': 'false', 'tabindex': '-1'} TEXT: Surgical Procedures
+ATTRS: {'class': 'nav-link z-50   ', 'id': 'medications-tab', 'data-bs-toggle': 'tab', 'data-bs-target': '#medications', 'type': 'button', 'role': 'tab', 'aria-controls': 'medications', 'aria-selected': 'false', 'tabindex': '-1'} TEXT: Medications
+ATTRS: {'class': 'nav-link z-50   ', 'id': 'analytics-tab', 'data-bs-toggle': 'tab', 'data-bs-target': '#analytics', 'type': 'button', 'role': 'tab', 'aria-controls': 'analytics', 'aria-selected': 'false', 'tabindex': '-1'} TEXT: Analytics & Insights
+ATTRS: {'class': ' ', 'title': 'Edit Summary'} TEXT: 
+ATTRS: {'class': 'show-more-btn flex items-center justify-center gap-1 w-full   text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors cursor-pointer bg-transparent border-none'} TEXT: Show more Information
+ATTRS: {'class': 'p-1.5 rounded hover:bg-gray-100 transition-colors text-gray-500', 'title': 'Zoom out'} TEXT: 
+ATTRS: {'class': 'p-1.5 rounded hover:bg-gray-100 transition-colors text-gray-500', 'title': 'Zoom in'} TEXT: 
+ATTRS: {'class': 'p-1.5 rounded transition-colors hover:bg-gray-100 text-gray-500', 'title': 'Filters'} TEXT: 
+ATTRS: {'class': 'p-1.5 rounded transition-colors hover:bg-gray-100 text-gray-500', 'title': 'Settings'} TEXT: 
+ATTRS: {'class': 'mt-2 text-blue-600 text-xs hover:underline'} TEXT: Reset filters
+ATTRS: {'class': 'downLoadButton', 'data-tooltip-id': 'download-lab-reports-tooltip'} TEXT: 
+ATTRS: {'class': 'flex items-center gap-2 px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors', 'style': 'font-family: Inter, sans-serif;'} TEXT: All Time
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-[#fcfcfc]'} TEXT: Hemoglobin(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: WBC(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: RBC(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: Platelet Count(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: Glucose Fasting(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: Glucose PP(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: HbA1c(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: Cholesterol(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: HDL(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'w-full p-4 flex items-start justify-between transition-all duration-300 ease-out text-left bg-transparent hover:bg-transparent'} TEXT: LDL(1 reading)Latest: 07/22/2025
+ATTRS: {'class': 'p-1 rounded transition-colors hover:bg-gray-100', 'title': 'Edit lab test'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]
+ATTRS: {'class': 'px-3 py-2 text-sm border border-[#E5E7EB] rounded-md transition-colors bg-gray-100 text-gray-400 cursor-not-allowed', 'disabled': ''} TEXT: Previous
+ATTRS: {'class': 'px-3 py-2 text-sm border border-[#E5E7EB] rounded-md transition-colors bg-white text-[#667085] hover:bg-gray-50'} TEXT: Next
+ATTRS: {'class': 'downLoadButton', 'data-tooltip-id': 'download-medical-bills-tooltip'} TEXT: 
+ATTRS: {'class': ''} TEXT: 
+ATTRS: {'class': ''} TEXT: 
+ATTRS: {'class': ''} TEXT: 
+ATTRS: {'class': ''} TEXT: 
+ATTRS: {'class': 'downLoadButton', 'data-tooltip-id': 'download-injuries-diagnoses-tooltip'} TEXT: 
+ATTRS: {'class': 'downLoadButton', 'data-tooltip-id': 'download-imaging-results-tooltip'} TEXT: 
+ATTRS: {'class': 'downLoadButton', 'data-tooltip-id': 'download-surgical-procedures-tooltip'} TEXT: 
+ATTRS: {'class': 'downLoadButton', 'data-tooltip-id': 'download-medications-tooltip'} TEXT: 
+ATTRS: {'class': 'downLoadButton', 'data-tooltip-id': 'download-medical-providers-tooltip'} TEXT: 
+ATTRS: {'class': 'w-full text-center justify-center flex items-center gap-2 px-2 py-2 bg-white border border-gray-300 rounded-lg text-black hover:bg-gray-50 transition-colors text-[13px] font-medium'} TEXT: Download
+ATTRS: {'class': 'flex w-full text-center justify-center items-center gap-2 px-2 py-2 bg-white border border-gray-300 rounded-lg text-black hover:bg-gray-50 transition-colors text-[13px] font-medium'} TEXT: Send to Client
+ATTRS: {'style': 'width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background-color: rgb(255, 255, 255); border: 1px solid rgb(234, 236, 240); border-radius: 8px; cursor: pointer; color: rgb(0, 0, 0); flex-shrink: 0; transition: 0.2s; position: relative;'} TEXT: 
+ATTRS: {'type': 'button', 'class': 'citation-button'} TEXT: [^1]

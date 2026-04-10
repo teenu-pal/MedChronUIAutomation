@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn clean:*)",
+      "Bash(npx:*)",
+      "Bash(claude mcp:*)",
+      "Bash(mvn compile:*)",
+      "Bash(ls -la /d/MedChronUIAutomation/*.*)",
+      "Bash(grep -E \"\\\\.\\(xml|json|txt|yml|yaml|config\\)$\")",
+      "Bash(mvn test-compile:*)",
+      "Bash(mvn test:*)",
+      "Bash(mvn allure:serve)",
+      "Bash(python remove_thread_sleep.py)",
+      "Bash(python remove_sleeps.py)",
+      "Bash(python /tmp/remove_sleeps.py)",
+      "Bash(ls D:/MedChronUIAutomation/src/main/java/medChronpage/remove_sleep*.py D:/MedChronUIAutomation/remove_sleep*.py /tmp/remove_sleep*.py)",
+      "Bash(find /tmp -name \"*.bak\" -newer /tmp)",
+      "Bash(python:*)",
+      "Bash(python3 add_thread_sleep.py)",
+      "Bash(py --version)",
+      "Bash(py -3 --version)",
+      "Bash(py add_thread_sleep.py)",
+      "Bash(py:*)",
+      "Bash(./mvnw compile:*)",
+      "Bash(./mvnw clean:*)"
+    ]
+  }
+}
