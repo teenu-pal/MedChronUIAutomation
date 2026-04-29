@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="MedChron Patient Suite" verbose="1" parallel="false">
+    <test name="Patient Test Flow">
+        <classes>
+            <class name="medchrontest.LoginTest"/>
+            <class name="medchrontest.PatientTest"/>
+        </classes>
+    </test>
+</suite>

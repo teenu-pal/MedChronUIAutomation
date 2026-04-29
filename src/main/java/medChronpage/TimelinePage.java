@@ -19,6 +19,11 @@ public class TimelinePage {
     private final WebDriverWait wait;
 
     private final List<By> timelineTabLocators = List.of(
+            // Current MedChron UI: sidebar uses <a href="/timeline"> (collapsed-state safe)
+            By.xpath("//a[@href='/timeline']"),
+            By.cssSelector("a.menu-item[href='/timeline']"),
+            By.cssSelector("a.mobile-menu-item[href='/timeline']"),
+            // Legacy fallbacks
             By.xpath("//div[@class='sidebar-nav-scroll']//span[contains(text(),'Timeline')]"),
             By.xpath("//span[normalize-space(text())='Timeline']"),
             By.xpath("//*[normalize-space(text())='Timeline']")

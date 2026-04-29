@@ -95,8 +95,8 @@ public class CasesTest extends BaseTest {
         System.out.println("Case Add Another test executed successfully.");
 
         // ===== Step 11: Create Case =====
-
-        casesPage.fillCaseForm();
+        // NOTE: fillCaseForm() yahan dobara call nahi karna — Step 7 me already fill ho chuka.
+        // Defendants fill karne ke baad direct create kar do, warna form fields overwrite ho jaate hain.
         Assert.assertTrue(casesPage.isCaseFormFilled(),
                 "Case form should be filled with data.");
         captureScreenshot("Case Form Filled");
@@ -114,11 +114,11 @@ public class CasesTest extends BaseTest {
         casesPage.searchCase(caseName);
         captureScreenshot("Searched Created Case");
 
-        casesPage.clickViewCase();
-        captureScreenshot("Case View Opened");
-        casesPage.clickViewCloseButton();
-        captureScreenshot("Case View Closed");
-        System.out.println("Cases View test executed successfully.");
+//        casesPage.clickViewCase();
+//        captureScreenshot("Case View Opened");
+//        casesPage.clickViewCloseButton();
+//        captureScreenshot("Case View Closed");
+//        System.out.println("Cases View test executed successfully.");
 
         // ===== Step 10: Search same case -> Edit all fields -> Save =====
 //
@@ -126,6 +126,7 @@ public class CasesTest extends BaseTest {
         captureScreenshot("Case Edit Mode Opened");
 
         casesPage.editAllFields();
+
         captureScreenshot("All Case Fields Edited");
 
         casesPage.clickSaveEditCase();

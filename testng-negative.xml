@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="MedChron Negative Login Suite" verbose="1" parallel="false">
+    <test name="Login Negative Tests">
+        <classes>
+            <class name="medchrontest.LoginNegativeTest"/>
+        </classes>
+    </test>
+</suite>

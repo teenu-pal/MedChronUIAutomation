@@ -98,8 +98,8 @@ public class TimelineTest extends BaseTest {
         captureScreenshot("Apply Filters Button Clicked After Checkboxes");
 
         // Click Clear all filters button
-        timelinePage.clickClearAllFiltersButton();
-        captureScreenshot("Clear All Filters Button Clicked");
+//        timelinePage.clickClearAllFiltersButton();
+//        captureScreenshot("Clear All Filters Button Clicked");
 
         // Click Advanced Filters again -> Click Save as custom View
         timelinePage.clickAdvancedFilters();

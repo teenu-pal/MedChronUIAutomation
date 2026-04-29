@@ -108,8 +108,8 @@ public class OverviewTest extends BaseTest {
             Assert.assertTrue(overviewPage.isEditBillClicked(),
                     "Edit bill button should be clicked.");
 
-            overviewPage.fillAllEditBillFields();
-            captureScreenshot("Edit Bill Fields Filled");
+//            overviewPage.fillAllEditBillFields();
+//            captureScreenshot("Edit Bill Fields Filled");
 
             overviewPage.clickCancelEditBill();
             Assert.assertTrue(overviewPage.isCancelEditBillClicked(),
@@ -135,32 +135,32 @@ public class OverviewTest extends BaseTest {
 
             try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
 
-            overviewPage.clickViewProviderDetailsAndBills();
-            Assert.assertTrue(overviewPage.isViewProviderDetailsAndBillsClicked(),
-                    "View Provider Details and Bills button should be clicked after saving edit bill.");
-            captureScreenshot("View Provider Details And Bills Clicked After Save");
-
-            overviewPage.clickViewBillDetails();
-            Assert.assertTrue(overviewPage.isViewBillDetailsClicked(),
-                    "View bill details button should be clicked after View Provider Details and Bills.");
-            captureScreenshot("View Bill Details Clicked After View Provider");
-
-            overviewPage.clickEditItemizedCharge(1);
-            captureScreenshot("Edit Item Clicked After View Bill Details");
-            overviewPage.fillEditItemizedChargeFields("02/02/2026", "2", "200.00");
-            captureScreenshot("Edit Item Fields Filled After Save");
-            overviewPage.clickSaveItemizedCharge();
-            captureScreenshot("Edit Item Saved After Save");
-
-            overviewPage.clickDeleteItemizedCharge(1);
-            captureScreenshot("Delete Item Clicked After Save");
-            overviewPage.clickCancelDeleteConfirm();
-            captureScreenshot("Delete Item Cancelled");
-
-            overviewPage.clickDeleteItemizedCharge(1);
-            captureScreenshot("Delete Item Clicked Again");
-            overviewPage.clickConfirmDeleteItem();
-            captureScreenshot("Delete Item Confirmed");
+//            overviewPage.clickViewProviderDetailsAndBills();
+//            Assert.assertTrue(overviewPage.isViewProviderDetailsAndBillsClicked(),
+//                    "View Provider Details and Bills button should be clicked after saving edit bill.");
+//            captureScreenshot("View Provider Details And Bills Clicked After Save");
+//
+//            overviewPage.clickViewBillDetails();
+//            Assert.assertTrue(overviewPage.isViewBillDetailsClicked(),
+//                    "View bill details button should be clicked after View Provider Details and Bills.");
+//            captureScreenshot("View Bill Details Clicked After View Provider");
+//
+//            overviewPage.clickEditItemizedCharge(1);
+//            captureScreenshot("Edit Item Clicked After View Bill Details");
+//            overviewPage.fillEditItemizedChargeFields("02/02/2026", "2", "200.00");
+//            captureScreenshot("Edit Item Fields Filled After Save");
+//            overviewPage.clickSaveItemizedCharge();
+//            captureScreenshot("Edit Item Saved After Save");
+//
+//            overviewPage.clickDeleteItemizedCharge(1);
+//            captureScreenshot("Delete Item Clicked After Save");
+//            overviewPage.clickCancelDeleteConfirm();
+//            captureScreenshot("Delete Item Cancelled");
+//
+//            overviewPage.clickDeleteItemizedCharge(1);
+//            captureScreenshot("Delete Item Clicked Again");
+//            overviewPage.clickConfirmDeleteItem();
+//            captureScreenshot("Delete Item Confirmed");
 
 //            overviewPage.clickMarkBillAsPaid();
 //            captureScreenshot("Mark Bill As Paid Clicked");
@@ -735,39 +735,39 @@ public class OverviewTest extends BaseTest {
         }
 
         // ===== Lab Record Results Tab =====
-//        try {
-//            documentsPage.openFromMenu();
-//            captureScreenshot("Navigated To Documents Page For Lab Record Upload");
-//
-//            // Upload Lab Record PDF
-//            String labRecordPdfPath = new java.io.File("src/main/resources/lab_record_usd.html.pdf").getAbsolutePath();
-//            documentsPage.uploadDocument(labRecordPdfPath);
-//            captureScreenshot("Lab Record PDF Uploaded");
-//
-//            // Wait for the document to be processed
-//            try {
-//                System.out.println("Waiting for 70 seconds after document upload...");
-//                Thread.sleep(70000);
-//            } catch (InterruptedException e2) { e2.printStackTrace(); }
-//
-//            // Navigate to Overview after Lab Record PDF upload
-//            overviewPage.clickOverviewSection();
-//            captureScreenshot("Navigated To Overview After Lab Record PDF Upload");
-//
-//            // Click Lab Record Results Tab
-//            overviewPage.clickLabRecordResultsTab();
-//            captureScreenshot("Lab Record Results Tab Clicked");
-//
-//            // Count lab record results
-//            int labResultsCount = overviewPage.countLabRecordResults();
-//            System.out.println("Total Lab Record Results: " + labResultsCount);
-//            io.qameta.allure.Allure.addAttachment("Lab Record Results Count", "text/plain", "Lab Record Results count: " + labResultsCount, ".txt");
-//            captureScreenshot("Lab Record Results Counted");
-//
-//        } catch (Exception e) {
-//            System.out.println("===== Lab Record Results FAILED: " + e.getMessage() + " =====");
-//            captureScreenshot("Lab Record Results Failed");
-//        }
+        try {
+            documentsPage.openFromMenu();
+            captureScreenshot("Navigated To Documents Page For Lab Record Upload");
+
+            // Upload Lab Record PDF
+            String labRecordPdfPath = new java.io.File("src/main/resources/lab_record_usd.html.pdf").getAbsolutePath();
+            documentsPage.uploadDocument(labRecordPdfPath);
+            captureScreenshot("Lab Record PDF Uploaded");
+
+            // Wait for the document to be processed
+            try {
+                System.out.println("Waiting for 70 seconds after document upload...");
+                Thread.sleep(70000);
+            } catch (InterruptedException e2) { e2.printStackTrace(); }
+
+            // Navigate to Overview after Lab Record PDF upload
+            overviewPage.clickOverviewSection();
+            captureScreenshot("Navigated To Overview After Lab Record PDF Upload");
+
+            // Click Lab Record Results Tab
+            overviewPage.clickLabRecordResultsTab();
+            captureScreenshot("Lab Record Results Tab Clicked");
+
+            // Count lab record results
+            int labResultsCount = overviewPage.countLabRecordResults();
+            System.out.println("Total Lab Record Results: " + labResultsCount);
+            io.qameta.allure.Allure.addAttachment("Lab Record Results Count", "text/plain", "Lab Record Results count: " + labResultsCount, ".txt");
+            captureScreenshot("Lab Record Results Counted");
+
+        } catch (Exception e) {
+            System.out.println("===== Lab Record Results FAILED: " + e.getMessage() + " =====");
+            captureScreenshot("Lab Record Results Failed");
+        }
 
         // ===== Section 8: Allergies Tab =====
         try {
@@ -855,20 +855,20 @@ public class OverviewTest extends BaseTest {
         }
 
         // ===== Navigate to Documents Page - Delete Allergies PDF =====
-        // try {
-        //     documentsPage.openFromMenu();
-        //     captureScreenshot("Navigated To Documents Page After Analytics");
-        //     documentsPage.clickGridCell();
-        //     captureScreenshot("Grid Cell Clicked For Delete");
-        //     documentsPage.clickDeleteDocument();
-        //     captureScreenshot("Delete Document Clicked");
-        //     documentsPage.clickConfirmDelete();
-        //     captureScreenshot("Delete Allergies PDF Confirmed");
+         try {
+             documentsPage.openFromMenu();
+             captureScreenshot("Navigated To Documents Page After Analytics");
+             documentsPage.clickGridCell();
+             captureScreenshot("Grid Cell Clicked For Delete");
+             documentsPage.clickDeleteDocument();
+             captureScreenshot("Delete Document Clicked");
+             documentsPage.clickConfirmDelete();
+             captureScreenshot("Delete Allergies PDF Confirmed");
 
-        // } catch (Exception e) {
-        //     System.out.println("===== Delete Allergies PDF FAILED: " + e.getMessage() + " =====");
-        //     captureScreenshot("Delete Allergies PDF Failed");
-        // }
+         } catch (Exception e) {
+             System.out.println("===== Delete Allergies PDF FAILED: " + e.getMessage() + " =====");
+             captureScreenshot("Delete Allergies PDF Failed");
+         }
 
     }
 

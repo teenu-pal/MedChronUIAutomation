@@ -200,7 +200,7 @@ public class OverviewPage {
     private final List<By> viewBillDetailsLocators = List.of(
             By.xpath("//button[normalize-space(text())='View bill details']"),
             By.xpath("//*[normalize-space(text())='View bill details']"),
-            By.xpath("//button[@title='View bill details']"),
+            By.xpath("//span[@class='common-button__icon']"),
             By.xpath("//button[contains(@class, 'view') and contains(@class, 'bill')]")
     );
 
@@ -230,7 +230,7 @@ public class OverviewPage {
             By.xpath("//button[contains(@class, 'edit')]"),
             By.xpath("//a[contains(@class, 'edit')]"),
             By.xpath("//*[local-name()='svg' and contains(@class, 'edit')]//parent::button"),
-            By.xpath("//button[@aria-label='Edit bill']"),
+            By.xpath("//span[@aria-label='Edit bill']"),
             By.xpath("//button[@aria-label='Edit']")
     );
 

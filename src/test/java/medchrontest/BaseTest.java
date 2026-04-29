@@ -13,6 +13,8 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 import java.io.ByteArrayInputStream;
 
@@ -27,8 +29,9 @@ public class BaseTest extends BaseLibrary {
     protected static TimelinePage timelinePage;
 
     @BeforeSuite(alwaysRun = true)
-    public void suiteSetUp() {
-        launchChrome();
+    @Parameters({"browser"})
+    public void suiteSetUp(@Optional("chrome") String browser) {
+        launchBrowser(browser);
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
         casesPage = new CasesPage(driver);
@@ -37,7 +40,7 @@ public class BaseTest extends BaseLibrary {
         overviewPage = new OverviewPage(driver);
         timelinePage = new TimelinePage(driver);
         loginPage.login(EMAIL, PASSWORD);
-        captureScreenshot("Post Login Dashboard");
+        captureScreenshot("Post Login Dashboard - " + browser.toUpperCase());
     }
 
     public void deleteDownloadedFiles() {
@@ -50,7 +53,7 @@ public class BaseTest extends BaseLibrary {
                     for (java.io.File file : files) {
                         if (file.isFile() && (file.getName().endsWith(".pdf") || file.getName().endsWith(".xlsx") || file.getName().endsWith(".xls") || file.getName().endsWith(".csv"))) {
                             long ageMs = System.currentTimeMillis() - file.lastModified();
-                            if (ageMs < 30000) { // only delete files downloaded in last 30 seconds
+                            if (ageMs < 30000) {
                                 file.delete();
                                 System.out.println("Deleted downloaded file: " + file.getName());
                             }
@@ -69,10 +72,9 @@ public class BaseTest extends BaseLibrary {
         }
     }
 
-    // @AfterSuite(alwaysRun = true)
-    // public void suiteTearDown() {
-    //     if (driver != null) {
-    //         driver.quit();
-    //     }
-    // }
+    @AfterSuite(alwaysRun = true)
+    public void suiteTearDown() {
+        // Browser intentionally kept open after suite for live inspection during debugging.
+        // closeBrowser();
+    }
 }
