@@ -8,6 +8,7 @@
             <class name="medchrontest.PatientTest"/>
             <class name="medchrontest.DocumentTest"/>
             <class name="medchrontest.OverviewTest"/>
+
             <class name="medchrontest.TimelineTest"/>
         </classes>
     </test>
