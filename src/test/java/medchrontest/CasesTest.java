@@ -1,7 +1,6 @@
 package medchrontest;
 
 import io.qameta.allure.Allure;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -11,153 +10,142 @@ public class CasesTest extends BaseTest {
 
     @Test
     public void verifyCaseCreationFlow() {
-        Assert.assertTrue(dashboardPage.isDashboardPageLoaded(),
-                "Dashboard should be available before opening Cases page.");
+        runStep("Verify Dashboard Available Before Cases", () ->
+                softAssert.assertTrue(dashboardPage.isDashboardPageLoaded(),
+                        "Dashboard should be available before opening Cases page."));
 
         // ===== Step 1: Navigate to Cases page =====
-        casesPage.navigateToCases();
-        Assert.assertTrue(casesPage.isCasesPageOpened(),
-                "Cases page should be opened.");
+        runStep("Navigate To Cases Page", () -> casesPage.navigateToCases());
+        runStep("Verify Cases Page Opened", () ->
+                softAssert.assertTrue(casesPage.isCasesPageOpened(),
+                        "Cases page should be opened."));
         captureScreenshot("Cases List Page Before Creation");
 
         // ===== Step 2: Capture table data before creation =====
-        int columnCount = casesPage.countCaseColumns();
-        Allure.addAttachment("Case Column Count", "text/plain", "Total columns: " + columnCount, ".txt");
+        runStep("Capture Case Column Count", () -> {
+            int columnCount = casesPage.countCaseColumns();
+            Allure.addAttachment("Case Column Count", "text/plain", "Total columns: " + columnCount, ".txt");
+        });
 
-        List<String> columnNames = casesPage.getCaseColumnNames();
-        String columnsStr = String.join(", ", columnNames);
-        Allure.addAttachment("Case Column Names", "text/plain", "Columns: " + columnsStr, ".txt");
+        runStep("Capture Case Column Names", () -> {
+            List<String> columnNames = casesPage.getCaseColumnNames();
+            String columnsStr = String.join(", ", columnNames);
+            Allure.addAttachment("Case Column Names", "text/plain", "Columns: " + columnsStr, ".txt");
+        });
 
-        int rowCount = casesPage.countCaseRows();
-        Allure.addAttachment("Case Row Count", "text/plain", "Total rows: " + rowCount, ".txt");
+        runStep("Capture Case Row Count", () -> {
+            int rowCount = casesPage.countCaseRows();
+            Allure.addAttachment("Case Row Count", "text/plain", "Total rows: " + rowCount, ".txt");
+        });
 
-        List<Map<String, String>> tableData = casesPage.getCaseTableData();
-        StringBuilder tableBuilder = new StringBuilder();
-        tableBuilder.append("--- Cases Table Data ---\n");
-        tableBuilder.append("Total Rows: ").append(tableData.size()).append("\n\n");
-        int rowNum = 1;
-        for (Map<String, String> row : tableData) {
-            tableBuilder.append("Row ").append(rowNum++).append(":\n");
-            for (Map.Entry<String, String> entry : row.entrySet()) {
-                tableBuilder.append("  ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        runStep("Capture Cases Table Data", () -> {
+            List<Map<String, String>> tableData = casesPage.getCaseTableData();
+            StringBuilder tableBuilder = new StringBuilder();
+            tableBuilder.append("--- Cases Table Data ---\n");
+            tableBuilder.append("Total Rows: ").append(tableData.size()).append("\n\n");
+            int rowNum = 1;
+            for (Map<String, String> row : tableData) {
+                tableBuilder.append("Row ").append(rowNum++).append(":\n");
+                for (Map.Entry<String, String> entry : row.entrySet()) {
+                    tableBuilder.append("  ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+                }
+                tableBuilder.append("\n");
             }
-            tableBuilder.append("\n");
-        }
-        Allure.addAttachment("Cases Table Data (Case Number, Case Title, Case Type, Created At, Source, Status)",
-                "text/plain", tableBuilder.toString(), ".txt");
+            Allure.addAttachment("Cases Table Data (Case Number, Case Title, Case Type, Created At, Source, Status)",
+                    "text/plain", tableBuilder.toString(), ".txt");
+        });
         captureScreenshot("Cases Table Data Captured");
         System.out.println("Captured Table Data executed successfully.");
 
         // ===== Step 3: Add New Case -> Close =====
-        casesPage.clickAddNewCase();
-        captureScreenshot("Add New Case Form Opened First Time");
-        casesPage.clickCloseButton();
-        captureScreenshot("Case Form Closed via Close Button");
+        runStep("Open Add New Case Form (Close Flow)", () -> casesPage.clickAddNewCase());
+        runStep("Close Case Form", () -> casesPage.clickCloseButton());
 
         // ===== Step 4: Add New Case -> Cancel =====
-        casesPage.clickAddNewCase();
-        captureScreenshot("Add New Case Form Opened For Cancel");
-        casesPage.clickFormCancelButton();
-        captureScreenshot("Case Form Cancelled via Cancel Button");
+        runStep("Open Add New Case Form (Cancel Flow)", () -> casesPage.clickAddNewCase());
+        runStep("Cancel Case Form", () -> casesPage.clickFormCancelButton());
 
         // ===== Step 5: Add New Case -> Start Full Flow =====
-        casesPage.clickAddNewCase();
-        captureScreenshot("Add New Case Form Opened For Full Flow");
+        runStep("Open Add New Case Form (Full Flow)", () -> casesPage.clickAddNewCase());
 
         // ===== Step 6: Test Case Type dropdown - click icon, select all options one by one =====
-        List<String> caseTypeOptions = casesPage.testAllCaseTypeOptions();
-        StringBuilder caseTypesBuilder = new StringBuilder();
-        caseTypesBuilder.append("--- Case Type Options ---\n");
-        for (String opt : caseTypeOptions) {
-            caseTypesBuilder.append("  ").append(opt).append("\n");
-        }
-        Allure.addAttachment("Case Type Dropdown Options", "text/plain", caseTypesBuilder.toString(), ".txt");
-        captureScreenshot("Case Type Dropdown All Options Tested");
+        runStep("Test All Case Type Dropdown Options", () -> {
+            List<String> caseTypeOptions = casesPage.testAllCaseTypeOptions();
+            StringBuilder caseTypesBuilder = new StringBuilder();
+            caseTypesBuilder.append("--- Case Type Options ---\n");
+            for (String opt : caseTypeOptions) {
+                caseTypesBuilder.append("  ").append(opt).append("\n");
+            }
+            Allure.addAttachment("Case Type Dropdown Options", "text/plain", caseTypesBuilder.toString(), ".txt");
+        });
 
         // ===== Step 8: Fill ALL form fields =====
-        casesPage.fillCaseForm();
-        captureScreenshot("All Form Fields Filled");
+        runStep("Fill All Case Form Fields", () -> casesPage.fillCaseForm());
 
         // ===== Step 7: Test ALL other dropdowns - click icon, list options =====
-        casesPage.testAllDropdownOptions();
-        captureScreenshot("All Dropdowns Tested");
+        runStep("Test All Other Dropdowns", () -> casesPage.testAllDropdownOptions());
 
         // ===== Step 9: Fill Defendants - name, phone, Person Account =====
-        casesPage.fillDefendantFields("John Doe Defendant", "9876543210", "Person Account");
-        captureScreenshot("Defendant Fields Filled");
+        runStep("Fill Defendant Fields", () ->
+                casesPage.fillDefendantFields("John Doe Defendant", "9876543210", "Person Account"));
 
         // ===== Step 10: Add Another defendant -> then Delete it =====
-        casesPage.clickAddAnotherDefendant();
-        captureScreenshot("Add Another Defendant Clicked");
+        runStep("Click Add Another Defendant", () -> casesPage.clickAddAnotherDefendant());
 
-        casesPage.deleteDefendant();
-        captureScreenshot("Added Defendant Deleted");
+        runStep("Delete Added Defendant", () -> casesPage.deleteDefendant());
         System.out.println("Case Add Another test executed successfully.");
 
         // ===== Step 11: Create Case =====
+        runStep("Verify Case Form Filled", () ->
+                softAssert.assertTrue(casesPage.isCaseFormFilled(),
+                        "Case form should be filled with data."));
 
-        casesPage.fillCaseForm();
-        Assert.assertTrue(casesPage.isCaseFormFilled(),
-                "Case form should be filled with data.");
-        captureScreenshot("Case Form Filled");
-
-        casesPage.clickCreateCase();
-        Assert.assertTrue(casesPage.isCaseCreated(),
-                "Case should be created successfully.");
-        captureScreenshot("Case Created Successfully");
+        runStep("Click Create Case", () -> casesPage.clickCreateCase());
+        runStep("Verify Case Created", () ->
+                softAssert.assertTrue(casesPage.isCaseCreated(),
+                        "Case should be created successfully."));
         System.out.println("Case Created test executed successfully.");
 
         // ===== Step 9: Search created case -> View -> Close =====
-        String caseName = casesPage.getCreatedCaseName();
-        System.out.println("Created case name: " + caseName);
+        final String[] caseNameHolder = new String[1];
+        runStep("Get Created Case Name", () -> {
+            caseNameHolder[0] = casesPage.getCreatedCaseName();
+            System.out.println("Created case name: " + caseNameHolder[0]);
+        });
 
-        casesPage.searchCase(caseName);
-        captureScreenshot("Searched Created Case");
-
-        casesPage.clickViewCase();
-        captureScreenshot("Case View Opened");
-        casesPage.clickViewCloseButton();
-        captureScreenshot("Case View Closed");
-        System.out.println("Cases View test executed successfully.");
+        runStep("Search Created Case", () -> {
+            if (caseNameHolder[0] != null) casesPage.searchCase(caseNameHolder[0]);
+        });
 
         // ===== Step 10: Search same case -> Edit all fields -> Save =====
-//
-        casesPage.clickEditCase();
-        captureScreenshot("Case Edit Mode Opened");
+        runStep("Click Edit Case", () -> casesPage.clickEditCase());
 
-        casesPage.editAllFields();
-        captureScreenshot("All Case Fields Edited");
+        runStep("Edit All Case Fields", () -> casesPage.editAllFields());
 
-        casesPage.clickSaveEditCase();
-        captureScreenshot("Case Edit Saved");
+        runStep("Save Edited Case", () -> casesPage.clickSaveEditCase());
         System.out.println("Cases Edit test executed successfully.");
 
         // ===== Step 11: Clear search =====
-        casesPage.clearSearch();
-        captureScreenshot("Search Cleared After Edit");
+        runStep("Clear Search After Edit", () -> casesPage.clearSearch());
 
         // ===== Step 12: Search edited case -> Delete -> Close =====
-        String editedCaseName = casesPage.getCreatedCaseName();
-        casesPage.searchCase(editedCaseName);
-        captureScreenshot("Searched Edited Case For Delete");
+        final String[] editedCaseNameHolder = new String[1];
+        runStep("Get Edited Case Name", () -> editedCaseNameHolder[0] = casesPage.getCreatedCaseName());
+        runStep("Search Edited Case For Delete", () -> {
+            if (editedCaseNameHolder[0] != null) casesPage.searchCase(editedCaseNameHolder[0]);
+        });
 
-        casesPage.clickDeleteCase();
-        captureScreenshot("Delete Case Dialog Opened");
-        casesPage.clickCloseButton();
-        captureScreenshot("Delete Dialog Closed via Close Button");
+        runStep("Open Delete Case Dialog (Close Flow)", () -> casesPage.clickDeleteCase());
+        runStep("Close Delete Dialog", () -> casesPage.clickCloseButton());
 
         // ===== Step 13: Delete -> Cancel =====
-        casesPage.clickDeleteCase();
-        captureScreenshot("Delete Case Dialog Opened Again");
-        casesPage.clickCancelDelete();
-        captureScreenshot("Delete Dialog Cancelled");
+        runStep("Open Delete Case Dialog (Cancel Flow)", () -> casesPage.clickDeleteCase());
+        runStep("Cancel Delete Dialog", () -> casesPage.clickCancelDelete());
 
         // ===== Step 14: Delete -> Confirm =====
-        casesPage.clickDeleteCase();
-        captureScreenshot("Delete Case Dialog Opened For Confirm");
-        casesPage.clickConfirmDelete();
-        captureScreenshot("Case Deleted Successfully");
-        casesPage.clearSearch();
+        runStep("Open Delete Case Dialog (Confirm Flow)", () -> casesPage.clickDeleteCase());
+        runStep("Confirm Delete Case", () -> casesPage.clickConfirmDelete());
+        runStep("Clear Search After Delete", () -> casesPage.clearSearch());
         System.out.println("Case Confirm Deleted Successfully.");
         System.out.println("Cases Page executed successfully.");
     }

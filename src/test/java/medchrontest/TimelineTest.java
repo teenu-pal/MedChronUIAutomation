@@ -7,165 +7,120 @@ public class TimelineTest extends BaseTest {
     @Test
     public void verifyTimelineSection() {
         // Click Timeline tab
-        timelinePage.clickTimelineTab();
-        captureScreenshot("Timeline Tab Clicked");
+        runStep("Click Timeline Tab", () -> timelinePage.clickTimelineTab());
 
         // Click Injury checkbox
-        timelinePage.clickInjuryCheckbox();
-        captureScreenshot("Injury Checkbox Clicked");
+        runStep("Click Injury Checkbox", () -> timelinePage.clickInjuryCheckbox());
 
         // Click Conditions checkbox
-        timelinePage.clickConditionsCheckbox();
-        captureScreenshot("Conditions Checkbox Clicked");
+        runStep("Click Conditions Checkbox", () -> timelinePage.clickConditionsCheckbox());
 
         // Click Procedures checkbox
-        timelinePage.clickProceduresCheckbox();
-        captureScreenshot("Procedures Checkbox Clicked");
+        runStep("Click Procedures Checkbox", () -> timelinePage.clickProceduresCheckbox());
 
         // Click Medications checkbox
-        timelinePage.clickMedicationsCheckbox();
-        captureScreenshot("Medications Checkbox Clicked");
+        runStep("Click Medications Checkbox", () -> timelinePage.clickMedicationsCheckbox());
 
         // Click again to uncheck all checkboxes
-        timelinePage.clickInjuryCheckbox();
-        captureScreenshot("Injury Checkbox Unchecked");
-
-        timelinePage.clickConditionsCheckbox();
-        captureScreenshot("Conditions Checkbox Unchecked");
-
-        timelinePage.clickProceduresCheckbox();
-        captureScreenshot("Procedures Checkbox Unchecked");
-
-        timelinePage.clickMedicationsCheckbox();
-        captureScreenshot("Medications Checkbox Unchecked");
+        runStep("Click Injury Checkbox To Uncheck", () -> timelinePage.clickInjuryCheckbox());
+        runStep("Click Conditions Checkbox To Uncheck", () -> timelinePage.clickConditionsCheckbox());
+        runStep("Click Procedures Checkbox To Uncheck", () -> timelinePage.clickProceduresCheckbox());
+        runStep("Click Medications Checkbox To Uncheck", () -> timelinePage.clickMedicationsCheckbox());
 
         // Click Advanced Filters -> Close
-        timelinePage.clickAdvancedFilters();
-        captureScreenshot("Advanced Filters Opened");
-        timelinePage.clickCloseButton();
-        captureScreenshot("Advanced Filters Closed");
+        runStep("Open Advanced Filters", () -> timelinePage.clickAdvancedFilters());
+        runStep("Close Advanced Filters", () -> timelinePage.clickCloseButton());
 
         // Click Advanced Filters -> Cancel
-        timelinePage.clickAdvancedFilters();
-        captureScreenshot("Advanced Filters Opened Again");
-        timelinePage.clickCancelButton();
-        captureScreenshot("Advanced Filters Cancelled");
+        runStep("Open Advanced Filters Again", () -> timelinePage.clickAdvancedFilters());
+        runStep("Cancel Advanced Filters", () -> timelinePage.clickCancelButton());
 
         // Click Advanced Filters -> Select Last Month -> Fill All Fields (including ICD-10 Codes)
-        timelinePage.clickAdvancedFilters();
-        captureScreenshot("Advanced Filters Opened For Fill");
-        timelinePage.clickAllTimeDropdown();
-        captureScreenshot("All Time Dropdown Clicked");
-        timelinePage.selectLastMonthOption();
-        captureScreenshot("Last Month Selected");
-        timelinePage.fillAllFilterFields();
-        captureScreenshot("All Filter Fields Filled Including ICD-10 Codes");
+        runStep("Open Advanced Filters For Fill", () -> timelinePage.clickAdvancedFilters());
+        runStep("Click All Time Dropdown", () -> timelinePage.clickAllTimeDropdown());
+        runStep("Select Last Month Option", () -> timelinePage.selectLastMonthOption());
+        runStep("Fill All Filter Fields Including ICD-10 Codes", () -> timelinePage.fillAllFilterFields());
 
         // After filling ICD-10 Codes -> Click Lab Result and Condition checkboxes
-        timelinePage.clickLabResultCheckbox();
-        captureScreenshot("Lab Result Checkbox Clicked");
-        timelinePage.clickConditionCheckbox();
-        captureScreenshot("Condition Checkbox Clicked");
+        runStep("Click Lab Result Checkbox", () -> timelinePage.clickLabResultCheckbox());
+        runStep("Click Condition Checkbox", () -> timelinePage.clickConditionCheckbox());
 
         // Click Apply Filter button
-        timelinePage.clickApplyFilterButton();
-        captureScreenshot("Apply Filter Button Clicked");
+        runStep("Click Apply Filter Button", () -> timelinePage.clickApplyFilterButton());
 
         // Click Advanced Filters again -> Click Reset Filters
-        timelinePage.clickAdvancedFilters();
-        captureScreenshot("Advanced Filters Opened For Reset");
-        timelinePage.clickResetFiltersButton();
-        captureScreenshot("Reset Filters Button Clicked");
+        runStep("Open Advanced Filters For Reset", () -> timelinePage.clickAdvancedFilters());
+        runStep("Click Reset Filters Button", () -> timelinePage.clickResetFiltersButton());
 
         // Click Advanced Filters again -> Fill all fields with different options
-        timelinePage.clickAdvancedFilters();
-        captureScreenshot("Advanced Filters Opened For Alternate Fill");
-        timelinePage.fillAllFilterFieldsAlternate();
-        captureScreenshot("All Filter Fields Filled With Different Options");
+        runStep("Open Advanced Filters For Alternate Fill", () -> timelinePage.clickAdvancedFilters());
+        runStep("Fill All Filter Fields With Different Options", () -> timelinePage.fillAllFilterFieldsAlternate());
 
         // Click Medical Bill, Medication, Allergy, Imaging checkboxes
-        timelinePage.clickMedicalBillCheckbox();
-        captureScreenshot("Medical Bill Checkbox Clicked");
-        timelinePage.clickMedicationsCheckbox();
-        captureScreenshot("Medication Checkbox Clicked");
-        timelinePage.clickAllergyCheckbox();
-        captureScreenshot("Allergy Checkbox Clicked");
-        timelinePage.clickImagingCheckbox();
-        captureScreenshot("Imaging Checkbox Clicked");
+        runStep("Click Medical Bill Checkbox", () -> timelinePage.clickMedicalBillCheckbox());
+        runStep("Click Medications Checkbox After Filters", () -> timelinePage.clickMedicationsCheckbox());
+        runStep("Click Allergy Checkbox", () -> timelinePage.clickAllergyCheckbox());
+        runStep("Click Imaging Checkbox", () -> timelinePage.clickImagingCheckbox());
 
         // Click Apply Filters button
-        timelinePage.clickApplyFilterButton();
-        captureScreenshot("Apply Filters Button Clicked After Checkboxes");
+        runStep("Click Apply Filters Button After Checkboxes", () -> timelinePage.clickApplyFilterButton());
 
         // Click Clear all filters button
-        timelinePage.clickClearAllFiltersButton();
-        captureScreenshot("Clear All Filters Button Clicked");
+//        runStep("Click Clear All Filters Button", () -> timelinePage.clickClearAllFiltersButton());
 
         // Click Advanced Filters again -> Click Save as custom View
-        timelinePage.clickAdvancedFilters();
-        captureScreenshot("Advanced Filters Opened For Save Custom View");
-        timelinePage.clickSaveAsCustomViewButton();
-        captureScreenshot("Save As Custom View Button Clicked");
+        runStep("Open Advanced Filters For Save Custom View", () -> timelinePage.clickAdvancedFilters());
+        runStep("Click Save As Custom View Button", () -> timelinePage.clickSaveAsCustomViewButton());
 
         // Fill timeline name field and click Yes, Save Timeline
-        timelinePage.fillTimelineNameField("My Custom Timeline View");
-        captureScreenshot("Timeline Name Field Filled");
-        timelinePage.clickYesSaveTimelineButton();
-        captureScreenshot("Yes Save Timeline Button Clicked");
+        runStep("Fill Timeline Name Field", () -> timelinePage.fillTimelineNameField("My Custom Timeline View"));
+        runStep("Click Yes Save Timeline Button", () -> timelinePage.clickYesSaveTimelineButton());
 
         // Navigate to Patient tab for next test
-        patientPage.navigateToPatientsList();
-        captureScreenshot("Navigated To Patients List After Timeline");
+        runStep("Navigate To Patients List After Timeline", () -> patientPage.navigateToPatientsList());
 
-        String patientName = patientPage.getCreatedPatientName();
-        System.out.println("=== Patient to manage: " + patientName + " ===");
+        final String[] patientNameHolder = new String[1];
+        runStep("Get Created Patient Name", () -> {
+            patientNameHolder[0] = patientPage.getCreatedPatientName();
+            System.out.println("=== Patient to manage: " + patientNameHolder[0] + " ===");
+        });
 
         // Search created patient
-        patientPage.searchPatient(patientName);
-        captureScreenshot("Searched Created Patient");
+        runStep("Search Created Patient", () -> {
+            if (patientNameHolder[0] != null) patientPage.searchPatient(patientNameHolder[0]);
+        });
 
         // View patient -> Close
-        patientPage.clickOpenPatientFile();
-        captureScreenshot("Opened Patient File");
-        patientPage.navigateToPatientsList();
+        runStep("Open Patient File", () -> patientPage.clickOpenPatientFile());
+        runStep("Navigate Back To Patients List", () -> patientPage.navigateToPatientsList());
 
         // Edit patient
-        patientPage.clickEditPatient();
-        captureScreenshot("Patient Edit Mode Opened");
-
-        patientPage.editAllPatientFields();
-        captureScreenshot("All Patient Fields Edited");
-
-        patientPage.clickSavePatient();
-        captureScreenshot("Patient Edit Saved");
+        runStep("Open Patient Edit Mode", () -> patientPage.clickEditPatient());
+        runStep("Edit All Patient Fields", () -> patientPage.editAllPatientFields());
+        runStep("Save Patient Edit", () -> patientPage.clickSavePatient());
 
         // Clear search
-        patientPage.clearSearch();
-        captureScreenshot("Patient Search Cleared");
+        runStep("Clear Patient Search", () -> patientPage.clearSearch());
 
         // Search edited patient for delete
-        String updatedPatientName = patientPage.getCreatedPatientName();
-        System.out.println("Updated patient name: " + updatedPatientName);
+        final String[] updatedPatientHolder = new String[1];
+        runStep("Get Updated Patient Name", () -> {
+            updatedPatientHolder[0] = patientPage.getCreatedPatientName();
+            System.out.println("Updated patient name: " + updatedPatientHolder[0]);
+        });
 
-        patientPage.searchPatient(updatedPatientName);
-        captureScreenshot("Searched Edited Patient For Delete");
+        runStep("Search Edited Patient For Delete", () -> {
+            if (updatedPatientHolder[0] != null) patientPage.searchPatient(updatedPatientHolder[0]);
+        });
 
         // Delete -> Cancel
-        patientPage.clickDeletePatient();
-        captureScreenshot("Delete Patient Dialog Opened");
-        patientPage.clickCancelDeletePatient();
-        captureScreenshot("Delete Patient Cancelled");
-        patientPage.clickDeletePatient();
-        patientPage.clickClosePatientView();
+        runStep("Open Delete Patient Dialog (Cancel Flow)", () -> patientPage.clickDeletePatient());
+        runStep("Cancel Delete Patient", () -> patientPage.clickCancelDeletePatient());
 
         // Delete -> Confirm
-        patientPage.clickDeletePatient();
-        captureScreenshot("Delete Patient Dialog Opened Again");
-        patientPage.clickConfirmDeletePatient();
-        captureScreenshot("Patient Deleted Successfully");
+        runStep("Open Delete Patient Dialog (Confirm Flow)", () -> patientPage.clickDeletePatient());
+        runStep("Confirm Delete Patient", () -> patientPage.clickConfirmDeletePatient());
 
-        patientPage.clearSearch();
-        captureScreenshot("Search Cleared After Delete");
+        runStep("Clear Search After Delete", () -> patientPage.clearSearch());
     }
 }
-

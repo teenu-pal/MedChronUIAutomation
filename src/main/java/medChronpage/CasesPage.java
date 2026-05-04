@@ -44,6 +44,7 @@ public class CasesPage {
     );
 
     private final List<By> cancelButtonLocators = List.of(
+            By.xpath("//span[contains(text(),'Cancel')]"),
             By.xpath("//button[normalize-space(text())='Cancel']"),
             By.xpath("//*[normalize-space(text())='Cancel']"),
             By.cssSelector("button[data-testid='cancel']"),
@@ -61,9 +62,9 @@ public class CasesPage {
     );
 
     private final List<By> addNewCaseButtonLocators = List.of(
-            By.xpath("//button[normalize-space(text())='Add']"),
+            By.xpath("//span[contains(text(),'Add')]"),
             By.xpath("//button[contains(normalize-space(text()),'Add')]"),
-            By.xpath("//button[contains(normalize-space(text()),'Add')]"),
+            By.xpath("//span[contains(normalize-space(text()),'Add')]"),
             By.xpath("//*[self::button or self::a][contains(normalize-space(text()),'Add New Case')]"),
             By.xpath("//button[contains(@class, 'pageMainButton')]"),
             By.cssSelector("button.pageMainButton"),
@@ -124,14 +125,15 @@ public class CasesPage {
             switchToMedchronContextIfNeeded(currentWindow, windowsBeforeClick);
             Thread.sleep(2000);
 
-            // Dismiss any modal
+            // Click Cases menu
+            clickFirstAvailable(casesMenuLocators, "Cases menu");
+            Thread.sleep(2000);
+
+            // Dismiss any modal/popup that appears on Cases page
             clickCancelButton();
             Thread.sleep(1000);
 
-            // Click Cases menu
-            clickFirstAvailable(casesMenuLocators, "Cases menu");
             casesPageOpened = true;
-            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -504,22 +506,41 @@ public class CasesPage {
                     for (int i = 1; i < optionTexts.size(); i++) {
                         try {
                             Thread.sleep(500);
-                            // Re-click dropdown icon
+                            // Re-click dropdown icon (re-find each time to avoid stale)
                             WebElement reopenIcon = wait.until(ExpectedConditions.elementToBeClickable(iconLocator));
-                            reopenIcon.click();
+                            try { reopenIcon.click(); } catch (Exception e) {
+                                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", reopenIcon);
+                            }
                             Thread.sleep(800);
 
-                            // Find and click the option by text
-                            WebElement opt = driver.findElement(By.xpath("//div[contains(@class,'menu') or contains(@class,'absolute') or contains(@class,'dropdown') or contains(@class,'listbox')]//*[normalize-space(text())='" + optionTexts.get(i) + "']"));
+                            // Find and click the option by text — broader xpath for React portals
+                            String optText = optionTexts.get(i);
+                            List<By> optionByText = List.of(
+                                    By.xpath("//*[@role='option' and normalize-space(.)='" + optText + "']"),
+                                    By.xpath("//div[contains(@class,'menu') or contains(@class,'absolute') or contains(@class,'dropdown') or contains(@class,'listbox')]//*[normalize-space(text())='" + optText + "']"),
+                                    By.xpath("//*[normalize-space(text())='" + optText + "' and (ancestor::div[contains(@class,'menu')] or ancestor::div[contains(@class,'absolute')] or ancestor::ul)]")
+                            );
+                            WebElement opt = null;
+                            for (By ol : optionByText) {
+                                try {
+                                    opt = wait.until(ExpectedConditions.presenceOfElementLocated(ol));
+                                    if (opt.isDisplayed()) break;
+                                } catch (Exception ignoredOpt) {}
+                            }
+                            if (opt == null) {
+                                System.out.println("  Could not select: " + optText + " (option element not found)");
+                                try { driver.findElement(By.tagName("body")).click(); } catch (Exception ignored2) {}
+                                continue;
+                            }
                             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", opt);
                             Thread.sleep(300);
                             try { opt.click(); } catch (Exception e) {
                                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", opt);
                             }
-                            selectedOptions.add(optionTexts.get(i));
-//                            System.out.println("  Selected: " + optionTexts.get(i));
+                            selectedOptions.add(optText);
+                            System.out.println("  Selected: " + optText);
                         } catch (Exception e) {
-//                            System.out.println("  Could not select: " + optionTexts.get(i) + " - " + e.getMessage());
+                            System.out.println("  Could not select: " + optionTexts.get(i) + " - " + e.getMessage());
                             // Close dropdown if stuck open
                             try { driver.findElement(By.tagName("body")).click(); } catch (Exception ignored2) {}
                         }
@@ -575,13 +596,23 @@ public class CasesPage {
                         if (dropdownTrigger.isDisplayed()) {
                             dropdownTrigger.click();
                             Thread.sleep(800);
-                            List<WebElement> options = driver.findElements(By.xpath("//div[contains(@class,'menu') or contains(@class,'absolute')]//div[contains(@class,'option') or @role='option']"));
+                            // Broader option detection — covers role='option', portal-rendered menus, react-select, custom listboxes
+                            List<WebElement> options = driver.findElements(By.xpath("//*[@role='option']"));
+                            if (options.isEmpty()) {
+                                options = driver.findElements(By.xpath("//div[contains(@class,'menu') or contains(@class,'absolute') or contains(@class,'dropdown') or contains(@class,'listbox')]//div[contains(@class,'option')]"));
+                            }
+                            if (options.isEmpty()) {
+                                options = driver.findElements(By.xpath("//div[contains(@id,'react-select') and contains(@id,'option')]"));
+                            }
                             if (options.isEmpty()) {
                                 options = driver.findElements(By.xpath("//div[contains(@class,'absolute')]//div[contains(@class,'cursor-pointer')]"));
                             }
                             System.out.println("  Dropdown [" + labelText + "] - " + options.size() + " options:");
                             for (WebElement opt : options) {
-//                                System.out.println("    -> " + opt.getText().trim());
+                                String optText = opt.getText().trim();
+                                if (!optText.isEmpty()) {
+                                    System.out.println("    -> " + optText);
+                                }
                             }
                             // Select first option
                             if (!options.isEmpty()) {
@@ -708,7 +739,7 @@ public class CasesPage {
         try {
             clickFirstAvailable(locators, "Delete defendant button");
         } catch (Exception e) {
-//            System.out.println("Warning: Delete defendant button was not found. Skipping.");
+            System.out.println("Warning: Delete defendant button was not found. Skipping.");
         }
     }
 
@@ -717,12 +748,26 @@ public class CasesPage {
     public void clickCloseButton() {
         try { Thread.sleep(500); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
-                By.xpath("//button[@class=' text-3xl hover:text-blue-600  ']"),
-                By.xpath("//button[@class='text-gray-400 hover:text-gray-600 transition-colors']"),
+                // Current MedChron alert dialog close (Delete-this-Case dialog X icon)
+                By.cssSelector("button.common-alert-dialog-close"),
+                By.xpath("//button[@aria-label='Close dialog']"),
+                By.xpath("//button[contains(@class,'common-alert-dialog-close')]"),
+                // Modal X icon-button (Add Case form)
+                By.xpath("//button[contains(@class,'icon-button') and .//*[local-name()='svg' and .//*[local-name()='path' and starts-with(@d,'M368 368')]]]"),
+                By.xpath("//*[local-name()='svg' and .//*[local-name()='path' and starts-with(@d,'M368 368')]]/ancestor::button"),
+                By.xpath("//button[contains(@class,'icon-button') and contains(@class,'!p-1')]"),
+                // Standard close attributes
                 By.xpath("//button[@aria-label='Close']"),
+                By.xpath("//span[normalize-space(text())='Close']"),
+                By.xpath("//span[contains(normalize-space(text()),'Close')]"),
                 By.xpath("//button[normalize-space(text())='Close']"),
+                By.xpath("//button[contains(normalize-space(.),'Close')]"),
+                By.xpath("//button[contains(@class,'text-3xl') and contains(@class,'hover:text-blue-600')]"),
+                By.xpath("//button[contains(@class,'text-gray-400') and contains(@class,'hover:text-gray-600')]"),
+                By.xpath("//button[contains(@class,'close-button')]"),
+                By.xpath("//button[contains(@class,'close')]"),
                 By.xpath("//*[local-name()='svg' and .//*[local-name()='line' and @x1='18' and @y1='6']]/ancestor::button"),
-                By.xpath("//button[contains(@class,'close')]")
+                By.cssSelector("button.modal-close, button.close, button[class*='close']")
         );
         clickFirstAvailable(locators, "Close button");
     }
@@ -730,9 +775,14 @@ public class CasesPage {
     public void clickFormCancelButton() {
         try { Thread.sleep(500); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
+                By.xpath("//span[@class='common-button__text' and normalize-space(text())='Cancel']"),
+                By.xpath("//span[normalize-space(text())='Cancel']"),
+                By.xpath("//span[contains(normalize-space(text()),'Cancel')]"),
                 By.xpath("//button[normalize-space(text())='Cancel']"),
+                By.xpath("//button[contains(normalize-space(.),'Cancel')]"),
                 By.xpath("//button[contains(@class,'cancelBtn')]"),
-                By.xpath("//button[contains(@class,'cancel')]")
+                By.xpath("//button[contains(@class,'cancel')]"),
+                By.xpath("//button[contains(@class,'common-button--outlined') and contains(@class,'common-button--secondary')]")
         );
         clickFirstAvailable(locators, "Cancel button on form");
     }
@@ -742,6 +792,11 @@ public class CasesPage {
     public void clickViewCase() {
         try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
+                // Current MedChron UI: case name itself is the clickable button to open view
+                By.xpath("(//span[contains(@class,'matter-cell-text--primary')]/ancestor::button)[1]"),
+                By.xpath("(//button[.//span[contains(@class,'matter-cell-text--primary')]])[1]"),
+                By.xpath("(//table//tbody//tr[1]//span[contains(@class,'matter-cell-text--primary')]/ancestor::button)[1]"),
+                // Legacy fallbacks
                 By.xpath("(//button[@title='View case' or @title='View Case' or @title='View'])[1]"),
                 By.xpath("(//table//tbody//tr[1]//button)[1]"),
                 By.xpath("(//table//tbody//tr[1]//a)[1]"),
@@ -894,11 +949,16 @@ public class CasesPage {
     public void clickConfirmDelete() {
         try { Thread.sleep(500); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
+                // Current MedChron Delete dialog: red 'Delete' button inside alert-dialog-buttons div
+                By.xpath("//div[contains(@class,'common-alert-dialog-buttons')]//button[contains(@class,'group-button--danger')]"),
+                By.xpath("//div[contains(@class,'common-alert-dialog-buttons')]//button[.//span[normalize-space(text())='Delete']]"),
+                By.xpath("//button[contains(@class,'group-button--danger') and .//span[normalize-space(text())='Delete']]"),
+                // Legacy fallbacks
                 By.xpath("//button[normalize-space(text())='Delete Case']"),
                 By.xpath("//button[normalize-space(text())='Confirm']"),
                 By.xpath("//button[normalize-space(text())='Yes, Delete']"),
-                By.xpath("//button[contains(@class,'danger') and contains(normalize-space(text()),'Delete')]"),
-                By.xpath("//button[normalize-space(text())='Delete Case']")
+                By.xpath("//button[normalize-space(text())='Delete']"),
+                By.xpath("//button[contains(@class,'danger') and contains(normalize-space(.),'Delete')]")
         );
         clickFirstAvailable(locators, "Confirm Delete button");
     }
@@ -906,7 +966,12 @@ public class CasesPage {
     public void clickCancelDelete() {
         try { Thread.sleep(500); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
+                // Current MedChron alert dialog: outlined Cancel button
+                By.xpath("//div[contains(@class,'common-alert-dialog-buttons')]//button[contains(@class,'group-button--outlined')]"),
+                By.xpath("//div[contains(@class,'common-alert-dialog-buttons')]//button[.//span[normalize-space(text())='Cancel']]"),
+                // Legacy fallbacks
                 By.xpath("//div[@role='dialog' or contains(@class,'modal')]//button[normalize-space(text())='Cancel']"),
+                By.xpath("//button[.//span[normalize-space(text())='Cancel']]"),
                 By.xpath("//button[normalize-space(text())='Cancel']"),
                 By.xpath("//button[contains(@class,'cancel')]")
         );
@@ -923,7 +988,7 @@ public class CasesPage {
     // ─── Private Helpers ─────────────────────────────────────────────────────────
 
     private void clickCancelButton() {
-        By primaryCancelLocator = By.xpath("//button[normalize-space(text())='Cancel']");
+        By primaryCancelLocator = By.xpath("//span[normalize-space(text())='Cancel']");
         try {
             WebDriverWait cancelWait = new WebDriverWait(driver, Duration.ofSeconds(4));
             WebElement cancelButton = cancelWait.until(ExpectedConditions.visibilityOfElementLocated(primaryCancelLocator));
@@ -1000,6 +1065,10 @@ public class CasesPage {
                         } catch (org.openqa.selenium.StaleElementReferenceException stale2) {
                             if (i == 2) throw stale2;
                             continue;
+                        } catch (Exception jsClickError) {
+                            ((JavascriptExecutor) driver).executeScript(
+                                    "arguments[0].dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));",
+                                    element);
                         }
                     }
                     return;
@@ -1009,6 +1078,11 @@ public class CasesPage {
                     break;
                 }
             }
+        }
+        try {
+            java.nio.file.Files.writeString(new java.io.File("target/error_page_dump_" + elementName.replaceAll("[\\\\/:*?\"<>|\\s]+", "_") + ".html").toPath(), driver.getPageSource());
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
         }
         throw new RuntimeException(elementName + " was not found.");
     }

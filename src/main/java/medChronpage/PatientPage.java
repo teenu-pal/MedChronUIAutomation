@@ -60,9 +60,12 @@ public class PatientPage {
             By.xpath("//*[contains(@class,'right') and contains(translate(normalize-space(.),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'documents')]")
     );
     private final List<By> addNewPatientButtonLocators = List.of(
+            By.xpath("//span[normalize-space(text())='Add New Patient']"),
+            By.xpath("//span[contains(normalize-space(text()),'Add New Patient')]"),
             By.xpath("//button[normalize-space(text())='Add New Patient']"),
             By.xpath("//button[contains(normalize-space(text()),'Add New Patient')]"),
-            By.xpath("//*[self::button or self::a][contains(normalize-space(text()),'Add New Patient')]"),
+            By.xpath("//button[contains(normalize-space(.),'Add New Patient')]"),
+            By.xpath("//*[self::button or self::a][contains(normalize-space(.),'Add New Patient')]"),
             By.cssSelector("[data-testid='add-new-patient']"),
             By.cssSelector("button[class*='add'][class*='patient']"),
             By.xpath("//button[contains(@class, 'pageMainButton')]"),
@@ -73,10 +76,14 @@ public class PatientPage {
             By.xpath("//*[contains(normalize-space(text()),'Create Patient')]")
     );
     private final List<By> createPatientWithoutCaseButtonLocators = List.of(
+            By.xpath("//span[normalize-space(text())='Create Patient Without Case']"),
+            By.xpath("//span[contains(normalize-space(text()),'Create Patient Without Case')]"),
+            By.xpath("//span[contains(normalize-space(text()),'Without Case')]"),
             By.xpath("//button[@class='mainBtnPrimary']"),
             By.xpath("//button[normalize-space(text())='Create Patient Without Case']"),
-            By.xpath("//*[self::button or self::a][contains(normalize-space(text()),'Create Patient Without Case')]"),
-            By.xpath("//*[self::button or self::a][contains(normalize-space(text()),'Without Case')]"),
+            By.xpath("//button[contains(normalize-space(.),'Create Patient Without Case')]"),
+            By.xpath("//*[self::button or self::a][contains(normalize-space(.),'Create Patient Without Case')]"),
+            By.xpath("//*[self::button or self::a][contains(normalize-space(.),'Without Case')]"),
             By.cssSelector("[data-testid='create-patient-without-case']")
     );
     private final List<By> fullNameFieldLocators = List.of(
@@ -272,6 +279,7 @@ public class PatientPage {
     public void searchPatient(String searchTerm) {
         try {
             Thread.sleep(1000);
+            waitForModalBackdropToClear();
             List<By> searchLocators = List.of(
                     By.xpath("//input[@placeholder='Search' or @placeholder='Search patients' or @placeholder='Search Patients']"),
                     By.xpath("//input[contains(@placeholder,'Search') or contains(@placeholder,'search')]"),
@@ -336,8 +344,14 @@ public class PatientPage {
     public void clickOpenPatientFile() {
         try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
+                By.xpath("(//span[normalize-space(text())='Open Patient File'])[1]"),
+                By.xpath("(//span[contains(normalize-space(text()),'Open Patient File')])[1]"),
                 By.xpath("(//button[@class='openDashboardButton'])[1]"),
-                By.xpath("(//button[contains(text(),'Open Patient File')])[1]")
+                By.xpath("(//button[contains(text(),'Open Patient File')])[1]"),
+                By.xpath("(//button[contains(normalize-space(.),'Open Patient File')])[1]"),
+                By.xpath("(//*[self::button or self::a][contains(normalize-space(.),'Open Patient File')])[1]"),
+                By.xpath("(//span[normalize-space(text())='View Patient'])[1]"),
+                By.xpath("(//button[contains(normalize-space(.),'View Patient')])[1]")
         );
         clickFirstAvailable(locators, "View Patient button");
     }
@@ -345,11 +359,13 @@ public class PatientPage {
     public void clickEditPatient() {
         try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
-                By.xpath("(//*[name()='svg' and .//*[name()='path' and starts-with(@d,'M17 3a2.828')]])[1]"),
+                By.xpath("(//*[name()='svg' and .//*[name()='path' and starts-with(@d,'M17 3a2.828')]]/ancestor::button)[1]"),
+                By.xpath("//span[normalize-space(text())='Edit']"),
                 By.xpath("//button[normalize-space(text())='Edit']"),
                 By.xpath("//button[contains(@class,'edit')]"),
                 By.xpath("//*[local-name()='svg' and contains(@class,'edit')]/ancestor::button"),
-                By.xpath("//a[normalize-space(text())='Edit']")
+                By.xpath("//a[normalize-space(text())='Edit']"),
+                By.xpath("(//*[name()='svg' and .//*[name()='path' and starts-with(@d,'M17 3a2.828')]])[1]")
         );
         clickFirstAvailable(locators, "Edit Patient button");
     }
@@ -432,15 +448,19 @@ public class PatientPage {
                 By.xpath("//button[@type='submit']")
         );
         clickFirstAvailable(locators, "Save Patient button");
+        waitForModalBackdropToClear();
     }
 
     public void clickDeletePatient() {
         try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
-                By.xpath("(//*[name()='svg' and .//*[name()='path' and starts-with(@d,'M170.5 51.6L151.5')]])[1]"),
+                By.xpath("(//*[name()='svg' and .//*[name()='path' and starts-with(@d,'M170.5 51.6L151.5')]]/ancestor::button)[1]"),
+                By.xpath("//span[normalize-space(text())='Delete']"),
                 By.xpath("//button[normalize-space(text())='Delete']"),
+                By.xpath("//button[contains(normalize-space(.),'Delete')]"),
                 By.xpath("//button[contains(@class,'delete')]"),
-                By.xpath("//*[local-name()='svg' and contains(@class,'trash')]/ancestor::button")
+                By.xpath("//*[local-name()='svg' and contains(@class,'trash')]/ancestor::button"),
+                By.xpath("(//*[name()='svg' and .//*[name()='path' and starts-with(@d,'M170.5 51.6L151.5')]])[1]")
         );
         clickFirstAvailable(locators, "Delete Patient button");
     }
@@ -460,8 +480,14 @@ public class PatientPage {
     public void clickCancelDeletePatient() {
         try { Thread.sleep(500); } catch (InterruptedException ignored) {}
         List<By> locators = List.of(
+                By.xpath("//div[@role='dialog' or contains(@class,'modal')]//span[normalize-space(text())='Cancel']"),
                 By.xpath("//div[@role='dialog' or contains(@class,'modal')]//button[normalize-space(text())='Cancel']"),
-                By.xpath("//button[normalize-space(text())='Cancel']")
+                By.xpath("//div[@role='dialog' or contains(@class,'modal')]//button[contains(normalize-space(.),'Cancel')]"),
+                By.xpath("//span[@class='common-button__text' and normalize-space(text())='Cancel']"),
+                By.xpath("//span[normalize-space(text())='Cancel']"),
+                By.xpath("//button[normalize-space(text())='Cancel']"),
+                By.xpath("//button[contains(normalize-space(.),'Cancel')]"),
+                By.xpath("//button[contains(@class,'common-button--outlined') and contains(@class,'common-button--secondary')]")
         );
         clickFirstAvailable(locators, "Cancel Delete Patient button");
     }
@@ -539,7 +565,7 @@ public class PatientPage {
             } else if ("date".equals(type)) {
                 data = "1995-05-10";
             } else {
-                data = "JoinTeenu" + counter;
+                data = "Jhoin" + counter;
             }
             try {
                 input.clear();
@@ -677,6 +703,30 @@ public class PatientPage {
         return false;
     }
 
+    private void waitForModalBackdropToClear() {
+        String selector = "div.modalBackdrop, div[class*='modalBackdrop'], div.modalOverlay, div[class*='modalOverlay']";
+        By backdrop = By.cssSelector(selector);
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(
+                    ExpectedConditions.invisibilityOfElementLocated(backdrop));
+            return;
+        } catch (Exception ignored) {}
+        try {
+            new org.openqa.selenium.interactions.Actions(driver).sendKeys(Keys.ESCAPE).perform();
+            Thread.sleep(500);
+        } catch (Exception ignored) {}
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(2)).until(
+                    ExpectedConditions.invisibilityOfElementLocated(backdrop));
+            return;
+        } catch (Exception ignored) {}
+        try {
+            ((JavascriptExecutor) driver).executeScript(
+                    "document.querySelectorAll('div.modalBackdrop, div[class*=\"modalBackdrop\"], div.modalOverlay, div[class*=\"modalOverlay\"]').forEach(function(b){b.remove();});");
+            System.out.println("Force-removed lingering modal backdrop/overlay via JS.");
+        } catch (Exception ignored) {}
+    }
+
     private void clickFirstAvailable(List<By> locators, String elementName) {
         clickFirstAvailable(locators, elementName, 10);
     }
@@ -698,6 +748,10 @@ public class PatientPage {
                         } catch (org.openqa.selenium.StaleElementReferenceException stale2) {
                             if (i == 2) throw stale2;
                             continue;
+                        } catch (Exception jsClickError) {
+                            ((JavascriptExecutor) driver).executeScript(
+                                    "arguments[0].dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));",
+                                    element);
                         }
                     }
                     return;

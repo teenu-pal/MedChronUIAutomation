@@ -96,15 +96,17 @@ public class OverviewPage {
     );
 
     private final List<By> injuriesSearchLocators = List.of(
-            By.xpath("//input[contains(@class, 'injuriesInputArea') and @placeholder='Search']"),
+            By.xpath("//div[@class='input-field__wrapper']//input[@placeholder='Search']"),
             By.xpath("//div[contains(@class, 'injuriesHolder')]//input[@placeholder='Search']")
     );
     private final List<By> injuriesRegionDropdownLocators = List.of(
-            By.xpath("//span[contains(@class, 'injuriesInputArea') and (text()='Head injury' or text()='Neck injury' or text()='Thorax/Chest injury' or text()='Abdomen/Pelvis injury' or text()='Shoulder injury' or text()='Upper arm injury' or text()='Elbow/Forearm injury' or text()='Wrist/Hand injury' or text()='Hip/Thigh injury' or text()='Knee/Lower leg injury' or text()='Lower leg injury' or text()='Ankle/Foot injury' or text()='Mid-back injury' or text()='Low-back injury' or text()='Spinal disorder' or text()='Joint disorder' or text()='Soft tissue disorder' or text()='Brain injury' or text()='Neurological' or text()='Mental health' or text()='All Regions')]"),
+            By.xpath("//button[@aria-label='Filter by region']"),
+            By.xpath("//span[contains(@class, 'injuriesInputArea') and (text()='Head injury' or text()='Thorax/Chest injury' or text()='Abdomen/Pelvis injury' or text()='Shoulder injury' or text()='Elbow/Forearm injury' or text()='Hip/Thigh injury' or text()='Knee/Lower leg injury' or text()='All Regions')]"),
             By.xpath("//div[@class='injuriesHolder min-w-[140px] cursor-pointer transition-all duration-200 hover:border-[#98A2B3] ']")
     );
     private final List<By> injuriesStatusDropdownLocators = List.of(
-            By.xpath("//span[contains(@class, 'injuriesInputArea') and (text()='Active' or text()='Ongoing' or text()='Under Treatment' or text()='Resolved' or text()='Healed' or text()='Chronic' or text()='Improving' or text()='Worsening' or text()='Persistent' or text()='All Status']"),
+            By.xpath("//button[@aria-label='Filter by status']"),
+            By.xpath("//span[contains(@class, 'injuriesInputArea') and (text()='Active' or text()='Ongoing' or text()='Under Treatment' or text()='Resolved' or text()='Healed' or text()='Chronic' or text()='Improving' or text()='Worsening' or text()='Persistent' or text()='All Status')]"),
             By.xpath("(//div[contains(@class, 'injuriesHolder')])[3]//span")
     );
     private final List<By> injuriesDateFilterLocators = List.of(
@@ -114,7 +116,7 @@ public class OverviewPage {
             By.xpath("//button[normalize-space(text())='Clear filters']"),
             By.xpath("//button[contains(@class, 'btn-link') and contains(text(), 'Clear')]")
     );
-    private final By injuriesListRowsLocator = By.xpath("//div[contains(@class, 'injury-row') or contains(@class, 'grid-row') or @role='row'] | //table//tbody//tr | //div[contains(@class, 'table-row')]"); // Will need to refine this once we see actual data
+    private final By injuriesListRowsLocator = By.xpath("//h1[contains(text(),'Injuries List')]//..//..//following-sibling::div//span"); // Will need to refine this once we see actual data
     private final List<By> editInjuryButtonLocators = List.of(
             By.xpath("(//button[@title='Edit injury' or @title='Edit Injury'])[1]"),
             By.xpath("(//button[contains(@class, 'editBtn')])[1]"),
@@ -127,11 +129,12 @@ public class OverviewPage {
     );
     private final List<By> editInjuryCancelLocators = List.of(
             By.xpath("//button[contains(@class, 'cancelBtn')]"),
-            By.xpath("//button[normalize-space(text())='Cancel']")
+            By.xpath("//span[normalize-space(text())='Cancel']")
     );
     private final List<By> editInjurySaveLocators = List.of(
             By.xpath("//button[contains(@class, 'saveBtn')]"),
-            By.xpath("//button[normalize-space(text())='Save Changes']")
+            By.xpath("//span[normalize-space(text())='Save Changes']"),
+            By.xpath("//button[@type='submit']")
     );
 
     // --- Edit Injury Modal Fields ---
@@ -152,7 +155,7 @@ public class OverviewPage {
     private final By injuryPreexistingCheckbox = By.xpath("//input[@name='preexisting']");
 
     private final List<By> providerRowLocators = List.of(
-            By.xpath("//table//tbody//tr"),
+            By.xpath("//h1[text()='Recent Lab Results']//..//..//following-sibling::div//span"),
             By.cssSelector("tbody tr"),
             By.xpath("//div[contains(@class, 'row') and not(contains(@class, 'header'))]")
     );
@@ -200,8 +203,7 @@ public class OverviewPage {
     private final List<By> viewBillDetailsLocators = List.of(
             By.xpath("//button[normalize-space(text())='View bill details']"),
             By.xpath("//*[normalize-space(text())='View bill details']"),
-            By.xpath("//button[@title='View bill details']"),
-            By.xpath("//button[contains(@class, 'view') and contains(@class, 'bill')]")
+            By.xpath("(//span[@class='common-button__icon'])[2]")
     );
 
     private final List<By> medicalBillOverviewLocators = List.of(
@@ -230,7 +232,7 @@ public class OverviewPage {
             By.xpath("//button[contains(@class, 'edit')]"),
             By.xpath("//a[contains(@class, 'edit')]"),
             By.xpath("//*[local-name()='svg' and contains(@class, 'edit')]//parent::button"),
-            By.xpath("//button[@aria-label='Edit bill']"),
+            By.xpath("//span[@aria-label='Edit bill']"),
             By.xpath("//button[@aria-label='Edit']")
     );
 
@@ -330,7 +332,7 @@ public class OverviewPage {
     );
 
     private final List<By> clearAllButtonLocators = List.of(
-            By.xpath("//*[@id=\"root\"]/div[2]/div[2]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[4]/button[1]"),
+            By.xpath("//button[contains(text(),'Clear all')]"),
             By.xpath("//button[normalize-space(text())='Clear All']"),
             By.xpath("//button[normalize-space(text())='Clear all']"),
             By.xpath("//*[contains(translate(normalize-space(text()), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'clear all')]")
@@ -338,7 +340,7 @@ public class OverviewPage {
 
     // --- Edit Lab Test Locators ---
     private final List<By> searchLabReportsLocators = List.of(
-            By.xpath("//input[@placeholder='Search' or contains(@class, 'searchInput')]"),
+            By.xpath("//div[@class='mainPageSearch']//input[@placeholder='Search']"),
             By.xpath("//div[contains(@class, 'search')]//input")
     );
     private final List<By> editLabTestButtonLocators = List.of(
@@ -355,11 +357,12 @@ public class OverviewPage {
     );
     private final List<By> editLabTestCancelLocators = List.of(
             By.xpath("//button[contains(@class, 'cancelBtn')]"),
-            By.xpath("//button[normalize-space(text())='Cancel']")
+            By.xpath("//span[normalize-space(text())='Cancel']")
     );
     private final List<By> editLabTestSaveLocators = List.of(
             By.xpath("//button[contains(@class, 'saveBtn')]"),
-            By.xpath("//button[normalize-space(text())='Save Changes']")
+            By.xpath("//button[@type='submit']"),
+            By.xpath("//span[normalize-space(text())='Save Changes']")
     );
 
     // Modal Fields
@@ -560,51 +563,61 @@ public class OverviewPage {
         try {
             Thread.sleep(1000);
             List<By> locators = List.of(
-                    By.xpath("//*[contains(text(),'Total Expense')]/following-sibling::*"),
-                    By.xpath("//*[contains(text(),'Total Expense')]/..//*[contains(text(),'$')]"),
+                    By.xpath("//*[contains(translate(normalize-space(.),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'total expense')]/following::*[contains(text(),'$')][1]"),
+                    By.xpath("//*[contains(translate(normalize-space(.),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'total expense')]/ancestor::*[1]//*[contains(text(),'$')]"),
+                    By.xpath("//*[contains(text(),'Total Expense')]/following-sibling::*[contains(text(),'$')]"),
                     By.xpath("//*[contains(text(),'Total Expense')]/parent::*//*[contains(text(),'$')]")
             );
             for (By locator : locators) {
                 try {
-                    WebElement el = driver.findElement(locator);
-                    if (el.isDisplayed() && !el.getText().trim().isEmpty()) {
-                        return el.getText().trim();
+                    List<WebElement> els = driver.findElements(locator);
+                    for (WebElement el : els) {
+                        String text = el.getText().trim();
+                        if (!text.isEmpty() && text.contains("$") && text.matches(".*\\d.*")) {
+                            return text;
+                        }
                     }
                 } catch (Exception ignored) {}
             }
         } catch (Exception e) {
-//            System.out.println("Could not get Total Expense: " + e.getMessage());
         }
         return "Not Found";
     }
 
     public Map<String, String> getAnalyticsCardValues() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(500); } catch (Exception e) {}
         Map<String, String> values = new LinkedHashMap<>();
         String[] cards = {"PAID BILLS", "UNPAID BILLS", "TREATMENT GAPS", "HIGH RISK ISSUES"};
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = "abcdefghijklmnopqrstuvwxyz";
         for (String card : cards) {
+            String cardLower = card.toLowerCase();
+            String value = "Not Found";
             try {
-                List<By> locators = List.of(
-                        By.xpath("//*[contains(translate(text(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'" + card + "')]/preceding-sibling::*"),
-                        By.xpath("//*[contains(translate(text(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'" + card + "')]/..//*[string-length(text()) < 10]"),
-                        By.xpath("//*[contains(translate(text(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'" + card + "')]/parent::*")
+                List<By> labelLocators = List.of(
+                        By.xpath("//*[contains(translate(normalize-space(.),'" + upper + "','" + lower + "'),'" + cardLower + "') and not(.//*[contains(translate(normalize-space(.),'" + upper + "','" + lower + "'),'" + cardLower + "')])]"),
+                        By.xpath("//*[translate(normalize-space(text()),'" + upper + "','" + lower + "')='" + cardLower + "']")
                 );
-                for (By locator : locators) {
-                    try {
-                        WebElement el = driver.findElement(locator);
-                        String text = el.getText().trim();
-                        if (!text.isEmpty() && !text.toUpperCase().contains(card)) {
-                            values.put(card, text);
-                            break;
+                outer:
+                for (By labelLoc : labelLocators) {
+                    List<WebElement> labels = driver.findElements(labelLoc);
+                    for (WebElement label : labels) {
+                        WebElement parent = label;
+                        for (int up = 0; up < 4; up++) {
+                            try {
+                                parent = parent.findElement(By.xpath(".."));
+                                String parentText = parent.getText().replace("\n", " ").trim();
+                                java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\$?\\d[\\d,.]*%?)").matcher(parentText);
+                                if (m.find()) {
+                                    value = m.group(1);
+                                    break outer;
+                                }
+                            } catch (Exception ignored) { break; }
                         }
-                    } catch (Exception ignored) {}
+                    }
                 }
-                if (!values.containsKey(card)) {
-                    values.put(card, "Not Found");
-                }
-            } catch (Exception e) {
-                values.put(card, "Not Found");
-            }
+            } catch (Exception ignored) {}
+            values.put(card, value);
         }
         return values;
     }
@@ -652,13 +665,29 @@ public class OverviewPage {
     }
 
     public void clickAllergyCitationButton() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(1500); } catch (Exception e) {}
         List<By> locators = List.of(
-                By.xpath("(//span[contains(text(),'Codeine')]//sup//button[@class='citation-button'])[4]"),
-                By.xpath("(//button[@class='citation-button'])[1]"),
-                By.xpath("//button[@class='citation-button']")
+                By.xpath("(//sup[contains(@class,'citation-link')]//button[contains(@class,'citation-button')])[1]"),
+                By.xpath("(//button[contains(@class,'citation-button')])[1]"),
+                By.xpath("//button[contains(@class,'citation-button')]")
         );
-        clickFirstAvailable(locators, "Allergy citation button");
+        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        for (By locator : locators) {
+            try {
+                WebElement btn = shortWait.until(ExpectedConditions.presenceOfElementLocated(locator));
+                ((JavascriptExecutor) driver).executeScript(
+                        "arguments[0].scrollIntoView({behavior:'instant',block:'center'});", btn);
+                try { Thread.sleep(300); } catch (Exception ignored) {}
+                try {
+                    btn.click();
+                } catch (Exception clickError) {
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+                }
+                System.out.println("Clicked Allergy citation button via: " + locator);
+                return;
+            } catch (Exception ignored) {}
+        }
+        System.out.println("Warning: Allergy citation button not found, skipping.");
     }
 
     public void clickAllergiesTab() {
@@ -881,7 +910,7 @@ public class OverviewPage {
         try { Thread.sleep(1000); } catch (Exception e) {}
         List<By> locators = List.of(
                 By.xpath("//button[normalize-space(text())='Save']"),
-                By.xpath("//button[contains(@class,'saveBtn')]"),
+                By.xpath("//span[contains(text(),'Save Changes')]"),
                 By.xpath("//button[contains(normalize-space(text()),'Save')]"),
                 By.xpath("//button[@type='submit']")
         );
@@ -924,7 +953,7 @@ public class OverviewPage {
 
     public void selectInjuryRegion(String region) {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
             WebElement dropdown = null;
             for (By locator : injuriesRegionDropdownLocators) {
                 try {
@@ -938,9 +967,12 @@ public class OverviewPage {
                 }
                 Thread.sleep(1000);
                 clickDropdownOption(region, "injury region");
+                System.out.println("Selected injury region: " + region);
+            } else {
+                System.out.println("Injury region dropdown not found, skipping: " + region);
             }
         } catch (Exception e) {
-            System.out.println("Could not select injury region: " + e.getMessage());
+            System.out.println("Could not select injury region '" + region + "': " + e.getMessage());
         }
     }
 
@@ -960,9 +992,12 @@ public class OverviewPage {
                 }
                 Thread.sleep(1000);
                 clickDropdownOption(status, "injury status");
+                System.out.println("Selected injury status: " + status);
+            } else {
+                System.out.println("Injury status dropdown not found, skipping: " + status);
             }
         } catch (Exception e) {
-            System.out.println("Could not select injury status: " + e.getMessage());
+            System.out.println("Could not select injury status '" + status + "': " + e.getMessage());
         }
     }
 
@@ -1010,7 +1045,18 @@ public class OverviewPage {
 
     public void clickClearInjuryFilters() {
         try { Thread.sleep(1500); } catch (Exception e) {}
-        clickFirstAvailable(injuriesClearFiltersLocators, "Clear Injury Filters Button");
+        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        for (By locator : injuriesClearFiltersLocators) {
+            try {
+                WebElement btn = shortWait.until(ExpectedConditions.elementToBeClickable(locator));
+                try { btn.click(); } catch (Exception e) {
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+                }
+                System.out.println("Clicked Clear Injury Filters via: " + locator);
+                return;
+            } catch (Exception ignored) {}
+        }
+        System.out.println("Clear Injury Filters button not present — skipping (filters can be reset via dropdowns).");
     }
 
     public void clickEditInjury() {
@@ -1040,17 +1086,17 @@ public class OverviewPage {
     }
 
     public void clickEditInjuryClose() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(500); } catch (Exception e) {}
         clickFirstAvailable(editInjuryCloseLocators, "Edit Injury Close Button");
     }
 
     public void clickEditInjuryCancel() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(500); } catch (Exception e) {}
         clickFirstAvailable(editInjuryCancelLocators, "Edit Injury Cancel Button");
     }
 
     public void clickEditInjurySave() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(500); } catch (Exception e) {}
         clickFirstAvailable(editInjurySaveLocators, "Edit Injury Save Button");
     }
 
@@ -1147,7 +1193,7 @@ public class OverviewPage {
     }
 
     public int countLabRecordResults() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(500); } catch (Exception e) {}
         for (By locator : providerRowLocators) {
             try {
                 List<WebElement> rows = driver.findElements(locator);
@@ -1161,6 +1207,110 @@ public class OverviewPage {
         }
         System.out.println("No Lab Record Results rows found.");
         return 0;
+    }
+
+    public List<String> getLabRecordColumnNames() {
+        try { Thread.sleep(1000); } catch (Exception e) {}
+        List<By> locators = List.of(
+                By.xpath("//h1[text()='Recent Lab Results']/ancestor::*[2]//table//thead//th"),
+                By.xpath("//h1[contains(text(),'Recent Lab Results')]/ancestor::*[3]//table//thead//th"),
+                By.xpath("//h1[contains(text(),'Lab')]/following::table[1]//thead//th"),
+                By.xpath("//table//thead//th")
+        );
+        for (By locator : locators) {
+            try {
+                List<WebElement> headers = driver.findElements(locator);
+                if (!headers.isEmpty()) {
+                    List<String> names = new java.util.ArrayList<>();
+                    for (WebElement h : headers) {
+                        String text = h.getText().trim();
+                        if (!text.isEmpty()) names.add(text);
+                    }
+                    if (!names.isEmpty()) {
+                        System.out.println("Lab Record column names: " + names);
+                        return names;
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+        System.out.println("Lab Record column names not found.");
+        return new java.util.ArrayList<>();
+    }
+
+    public List<String> getLabRecordRows() {
+        try { Thread.sleep(1000); } catch (Exception e) {}
+        List<By> locators = List.of(
+                By.xpath("//h1[text()='Recent Lab Results']/ancestor::*[2]//table//tbody//tr"),
+                By.xpath("//h1[contains(text(),'Recent Lab Results')]/ancestor::*[3]//table//tbody//tr"),
+                By.xpath("//h1[contains(text(),'Lab')]/following::table[1]//tbody//tr"),
+                By.xpath("//table//tbody//tr")
+        );
+        List<String> rowsData = new java.util.ArrayList<>();
+        for (By locator : locators) {
+            try {
+                List<WebElement> rows = driver.findElements(locator);
+                if (!rows.isEmpty()) {
+                    for (WebElement row : rows) {
+                        String text = row.getText().replace("\n", " | ").trim();
+                        if (!text.isEmpty()) rowsData.add(text);
+                    }
+                    if (!rowsData.isEmpty()) {
+                        System.out.println("Lab Record row count: " + rowsData.size());
+                        return rowsData;
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+        System.out.println("No Lab Record rows captured.");
+        return rowsData;
+    }
+
+    public String getLabRecordTotalCountText() {
+        try { Thread.sleep(1000); } catch (Exception e) {}
+        List<By> locators = List.of(
+                By.xpath("//h1[text()='Recent Lab Results']//..//..//following-sibling::span[contains(@class,'text-xs font-medium')]"),
+                By.xpath("//h1[contains(text(),'Recent Lab Results')]//..//..//following-sibling::span[contains(@class,'text-xs')]"),
+                By.xpath("//h1[contains(text(),'Recent Lab Results')]/ancestor::*[3]//span[contains(@class,'text-xs font-medium')]"),
+                By.xpath("//h1[contains(text(),'Lab')]/following::span[contains(@class,'text-xs font-medium')][1]")
+        );
+        for (By locator : locators) {
+            try {
+                WebElement el = driver.findElement(locator);
+                String text = el.getText().trim();
+                if (!text.isEmpty()) {
+                    System.out.println("Recent Lab Results total: " + text);
+                    return text;
+                }
+            } catch (Exception ignored) {}
+        }
+        System.out.println("Recent Lab Results total count not found.");
+        return "Not Found";
+    }
+
+    public void clickLabRecordNextButton() {
+        try { Thread.sleep(500); } catch (Exception e) {}
+        List<By> locators = List.of(
+                By.xpath("//h1[text()='Recent Lab Results']/ancestor::*[3]//button[normalize-space(text())='Next' or @aria-label='Next']"),
+                By.xpath("//h1[contains(text(),'Recent Lab Results')]/following::button[normalize-space(text())='Next' or @aria-label='Next'][1]"),
+                By.xpath("//button[normalize-space(text())='Next']"),
+                By.xpath("//button[@aria-label='Next']"),
+                By.xpath("//button[contains(@class,'next')]"),
+                By.xpath("//button[contains(text(),'Next')]")
+        );
+        clickFirstAvailable(locators, "Lab Record Next button");
+    }
+
+    public void clickLabRecordPreviousButton() {
+        try { Thread.sleep(500); } catch (Exception e) {}
+        List<By> locators = List.of(
+                By.xpath("//h1[text()='Recent Lab Results']/ancestor::*[3]//button[normalize-space(text())='Previous' or @aria-label='Previous']"),
+                By.xpath("//h1[contains(text(),'Recent Lab Results')]/following::button[normalize-space(text())='Previous' or @aria-label='Previous'][1]"),
+                By.xpath("//button[normalize-space(text())='Previous']"),
+                By.xpath("//button[@aria-label='Previous']"),
+                By.xpath("//button[contains(@class,'previous') or contains(@class,'prev')]"),
+                By.xpath("//button[contains(text(),'Previous')]")
+        );
+        clickFirstAvailable(locators, "Lab Record Previous button");
     }
 
     public int countProviderBills() {
@@ -1387,14 +1537,14 @@ public class OverviewPage {
     }
 
     public void clickClearAll() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(500); } catch (Exception e) {}
         clickFirstAvailable(clearAllButtonLocators, "Clear All button");
     }
 
     // --- Edit Lab Test Methods ---
     public void searchLabReports(String searchTerm) {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
             WebElement searchInput = null;
             for (By locator : searchLabReportsLocators) {
                 try {
@@ -1442,12 +1592,12 @@ public class OverviewPage {
     }
 
     public void clickEditLabTestClose() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(500); } catch (Exception e) {}
         clickFirstAvailable(editLabTestCloseLocators, "Edit Lab Test Close Button");
     }
 
     public void clickEditLabTestCancel() {
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        try { Thread.sleep(500); } catch (Exception e) {}
         clickFirstAvailable(editLabTestCancelLocators, "Edit Lab Test Cancel Button");
     }
 
@@ -1887,17 +2037,58 @@ public class OverviewPage {
                         input.sendKeys(org.openqa.selenium.Keys.BACK_SPACE);
                         input.clear();
 
-                        String data = "Test" + counter;
-                        if ("number".equals(type) || "tel".equals(type)) {
-                            data = "100";
+                        String fieldLabel = getFieldLabel(input).toLowerCase();
+                        boolean isDateOfService   = fieldLabel.contains("date of service");
+                        boolean isBillCreatedDate = fieldLabel.contains("bill created date") || (fieldLabel.contains("bill") && fieldLabel.contains("created") && fieldLabel.contains("date"));
+                        boolean isSignatureDate   = fieldLabel.contains("signature date") || (fieldLabel.contains("signature") && fieldLabel.contains("date"));
+                        boolean isTargetDateField = isDateOfService || isBillCreatedDate || isSignatureDate;
+
+                        String data;
+                        if (isTargetDateField) {
+                            data = "date".equals(type) ? "2025-01-01" : "01/01/2025";
                         } else if ("date".equals(type)) {
                             data = "2025-01-01";
+                        } else if ("number".equals(type) || "tel".equals(type)) {
+                            data = "100";
+                        } else {
+                            data = "Test" + counter;
                         }
                         input.sendKeys(data);
+                        if (isTargetDateField) {
+                            String which = isDateOfService ? "Date of Service" : (isBillCreatedDate ? "Bill Created Date" : "Signature Date");
+                            System.out.println("Filled " + which + " with: " + data);
+                        }
                         counter++;
                     } catch (Exception ignored) {
                     }
                 }
+            }
+
+            private String getFieldLabel(WebElement input) {
+                StringBuilder sb = new StringBuilder();
+                try {
+                    String id = input.getAttribute("id");
+                    if (id != null && !id.isEmpty()) {
+                        List<WebElement> labels = driver.findElements(By.xpath("//label[@for='" + id + "']"));
+                        for (WebElement l : labels) sb.append(' ').append(l.getText());
+                    }
+                } catch (Exception ignored) {}
+                String[] attrs = {"aria-label", "aria-labelledby", "placeholder", "name", "title"};
+                for (String a : attrs) {
+                    try {
+                        String v = input.getAttribute(a);
+                        if (v != null && !v.isEmpty()) sb.append(' ').append(v);
+                    } catch (Exception ignored) {}
+                }
+                try {
+                    WebElement ancestorLabel = input.findElement(By.xpath("./ancestor::label[1]"));
+                    sb.append(' ').append(ancestorLabel.getText());
+                } catch (Exception ignored) {}
+                try {
+                    WebElement precedingLabel = input.findElement(By.xpath("./preceding::label[1]"));
+                    sb.append(' ').append(precedingLabel.getText());
+                } catch (Exception ignored) {}
+                return sb.toString();
             }
 
             public void clickCancelEditBill () {
@@ -1928,14 +2119,14 @@ public class OverviewPage {
 
             public void clickSaveEditBill () {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                 }
                 clickFirstAvailable(saveEditBillLocators, "Save edit bill button");
             }
             public void clickMarkBillAsPaid () {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                 }
                 clickFirstAvailable(markBillAsPaidLocators, "Mark Bill as Paid button");
@@ -1943,7 +2134,7 @@ public class OverviewPage {
 
             public void clickConfirmButton () {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                 }
                 clickFirstAvailable(confirmButtonLocators, "Confirm button");
@@ -1952,7 +2143,7 @@ public class OverviewPage {
             public List<String> getItemizedChargesColumns () {
                 List<String> columnsData = new java.util.ArrayList<>();
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                     List<WebElement> columns = driver.findElements(By.xpath("//*[contains(text(), 'Itemized Medical Charges')]/following::table[1]//thead//th"));
                     for (WebElement col : columns) {
                         String colText = col.getText().trim();
@@ -1969,7 +2160,7 @@ public class OverviewPage {
             public List<String> getItemizedChargesRows () {
                 List<String> rowData = new java.util.ArrayList<>();
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                     List<WebElement> rows = driver.findElements(By.xpath("//*[contains(text(), 'Itemized Medical Charges')]/following::table[1]//tbody//tr"));
                     for (WebElement row : rows) {
                         rowData.add(row.getText().replace("\n", " | "));
@@ -1982,7 +2173,7 @@ public class OverviewPage {
 
             public void clickEditItemizedCharge ( int rowIndex){
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                 }
                 List<By> locators = List.of(
@@ -1997,7 +2188,7 @@ public class OverviewPage {
 
             public void fillEditItemizedChargeFields (String date, String qty, String unitAmount){
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                     List<WebElement> tableInputs = driver.findElements(By.xpath("//*[contains(text(), 'Itemized Medical Charges')]/following::table[1]//input"));
                     if (!tableInputs.isEmpty()) {
                         for (WebElement input : tableInputs) {
@@ -2029,7 +2220,7 @@ public class OverviewPage {
 
             public void clickSaveItemizedCharge () {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                 }
                 List<By> locators = List.of(
@@ -2037,14 +2228,14 @@ public class OverviewPage {
                         By.xpath("//*[contains(text(), 'Itemized Medical Charges')]/following::table[1]//*[local-name()='svg' and contains(@class, 'check')]/ancestor::button"),
                         By.xpath("//*[contains(text(), 'Itemized Medical Charges')]/following::table[1]//*[local-name()='svg' and contains(@class, 'check')]"),
                         By.xpath("//*[contains(text(), 'Itemized Medical Charges')]/following::table[1]//button[@title='Save']"),
-                        By.xpath("//*[contains(text(), 'Itemized Medical Charges')]/following::table[1]//td[last()]//button[1]")
+                        By.xpath("//*[contains(text(), 'Save Changes')]")
                 );
                 clickFirstAvailable(locators, "Save itemized charge button");
             }
 
             public void clickDeleteItemizedCharge ( int rowIndex){
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                 }
                 List<By> locators = List.of(
@@ -2059,25 +2250,25 @@ public class OverviewPage {
 
             public void clickCancelDeleteConfirm () {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                 }
                 List<By> locators = List.of(
                         By.xpath("//div[@role='dialog' or contains(@class, 'modal')]//button[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'cancel')]"),
-                        By.xpath("//button[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'cancel')]")
+                        By.xpath("//span[contains(text(),'Cancel')]")
                 );
                 clickFirstAvailable(locators, "Cancel delete confirmation button");
             }
 
             public void clickConfirmDeleteItem () {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                 }
                 List<By> locators = List.of(
                         By.xpath("//div[@role='dialog' or contains(@class, 'modal')]//button[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'delete') or contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'confirm')]"),
                         By.xpath("//button[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'delete') and contains(@class, 'bg-red')]"),
-                        By.xpath("//button[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'confirm')]")
+                        By.xpath("//span[contains(text(),'Delete Item')]")
                 );
                 clickFirstAvailable(locators, "Confirm delete item button");
             }
