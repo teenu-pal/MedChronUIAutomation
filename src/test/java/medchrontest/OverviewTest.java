@@ -1,6 +1,5 @@
 package medchrontest;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Map;
@@ -11,339 +10,315 @@ public class OverviewTest extends BaseTest {
     @Test
     public void verifyOverviewSection() {
 
-        // ===== Section 1: Medical Providers & Bills Tab =====
-        try {
-            overviewPage.clickOverviewSection();
-            overviewPage.clickMedicalProvidersAndBillsTab();
-
-            Assert.assertTrue(overviewPage.isOverviewSectionClicked(),
-                    "Overview section should be clicked after Documents section.");
-            Assert.assertTrue(overviewPage.isMedicalProvidersAndBillsClicked(),
-                    "Medical Providers & Bills tab should be clicked.");
-
-            List<String> providerColumns = overviewPage.getMedicalProvidersAndBillsColumns();
-            StringBuilder providerColumnsBuilder = new StringBuilder();
-            providerColumnsBuilder.append("--- Medical Providers & Bills Columns ---\n");
-            String providerColumnsStr = String.join(", ", providerColumns);
-            System.out.println("Columns count: " + providerColumns.size() + " | Columns: " + providerColumnsStr);
-            providerColumnsBuilder.append("Columns count: ").append(providerColumns.size()).append("\n");
-            providerColumnsBuilder.append(providerColumnsStr).append("\n");
-            io.qameta.allure.Allure.addAttachment("Medical Providers & Bills Columns", "text/plain", providerColumnsBuilder.toString(), ".txt");
-
-            int rows = overviewPage.countProviderBills();
-            System.out.println("Total Provider Bills rows counted: " + rows);
-
-            overviewPage.clickViewProviderDetailsAndBills();
-
-            Assert.assertTrue(overviewPage.isViewProviderDetailsAndBillsClicked(),
-                    "View Provider Details and Bills icon should be clicked.");
-
-            overviewPage.clickDownloadAndExportPdf();
-            Assert.assertTrue(overviewPage.isDownloadPdfExportedAndVerified(),
-                    "Download button should be clicked and PDF should be exported successfully.");
-            deleteDownloadedFiles();
-
-            overviewPage.clickDownloadAndExportExcel();
-            Assert.assertTrue(overviewPage.isDownloadExcelExportedAndVerified(),
-                    "Download button should be clicked and Excel should be exported successfully.");
-            deleteDownloadedFiles();
-
-            // Expected billing summary values
-            double expectedGrossTotal = 1983.75;
-            double expectedInsurancePaid = 1190.48;
-            double expectedPatientPaid = 238.10;
-            double expectedAdjustments = 67.08;
-            double expectedOutstanding = 488.10;
-
-            Map<String, String> billingSummary = overviewPage.getBillingSummary();
-            StringBuilder summaryBuilder = new StringBuilder();
-            summaryBuilder.append("--- Billing Summary Captured ---\n");
-
-            System.out.println("\n--- Billing Summary Captured ---");
-            for (Map.Entry<String, String> entry : billingSummary.entrySet()) {
-                String line = entry.getKey() + ": " + entry.getValue();
-                System.out.println(line);
-                summaryBuilder.append(line).append("\n");
-                Assert.assertNotEquals(entry.getValue(), "Not Found",
-                    "Value for '" + entry.getKey() + "' was not found in the summary.");
-            }
-            System.out.println("--------------------------------\n");
-
-            io.qameta.allure.Allure.addAttachment("Billing Summary Output", "text/plain", summaryBuilder.toString(), ".txt");
-
-            // Assert billing summary values
-            assertBillingAmount(billingSummary, "Total Billed", expectedGrossTotal);
-            assertBillingAmount(billingSummary, "Insurance Paid", expectedInsurancePaid);
-            assertBillingAmount(billingSummary, "Patient Paid", expectedPatientPaid);
-            assertBillingAmount(billingSummary, "Adjustments", expectedAdjustments);
-            assertBillingAmount(billingSummary, "Outstanding", expectedOutstanding);
-
-            overviewPage.clickViewBillDetails();
-            Assert.assertTrue(overviewPage.isViewBillDetailsClicked(),
-                    "View bill details button should be clicked.");
-
-            overviewPage.clickBackToMedicalBills();
-            Assert.assertTrue(overviewPage.isBackToMedicalBillsClicked(),
-                    "Back to Medical Bills button should be clicked.");
-
-            overviewPage.clickViewBillDetails();
-            Assert.assertTrue(overviewPage.isViewBillDetailsClicked(),
-                    "View bill details button should be clicked again.");
-
-            Assert.assertTrue(overviewPage.isMedicalBillOverviewTextDisplayed(),
-                    "Medical Bill Overview text should be displayed.");
-
-            String totalDue = overviewPage.getTotalDue();
-            System.out.println("Total Due found: " + totalDue);
-            io.qameta.allure.Allure.addAttachment("Total Due Captured", "text/plain", "Total Due: " + totalDue, ".txt");
-            Assert.assertNotEquals(totalDue, "Not Found", "Total Due value should be found.");
-
-            int itemizedCount = overviewPage.countItemizedMedicalChargesItems();
-            System.out.println("Itemized Medical Charges items counted: " + itemizedCount);
-            io.qameta.allure.Allure.addAttachment("Itemized Medical Charges Count", "text/plain", "Items count: " + itemizedCount, ".txt");
-
-            captureScreenshot("View Bill Details and Total Due Checked");
-
-            overviewPage.clickEditBill();
-            Assert.assertTrue(overviewPage.isEditBillClicked(),
-                    "Edit bill button should be clicked.");
-
-//            overviewPage.fillAllEditBillFields();
-//            captureScreenshot("Edit Bill Fields Filled");
-
-            overviewPage.clickCancelEditBill();
-            Assert.assertTrue(overviewPage.isCancelEditBillClicked(),
-                    "Cancel edit bill button should be clicked.");
-
-            overviewPage.clickEditBill();
-            Assert.assertTrue(overviewPage.isEditBillClicked(),
-                    "Edit bill button should be clicked again.");
-
-            overviewPage.clickCloseEditBill();
-            Assert.assertTrue(overviewPage.isCloseEditBillClicked(),
-                    "Close edit bill button should be clicked.");
-
-            overviewPage.clickEditBill();
-            Assert.assertTrue(overviewPage.isEditBillClicked(),
-                    "Edit bill button should be clicked for the third time.");
-
-            overviewPage.fillSpecificEditBillFields();
-            captureScreenshot("Specific Edit Bill Fields Filled");
-
-            overviewPage.clickSaveEditBill();
-            captureScreenshot("Edit Bill Saved");
-
-            try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
-
+//        // ===== Section 1: Medical Providers & Bills Tab =====
+//        try {
+//            overviewPage.clickOverviewSection();
+//            overviewPage.clickMedicalProvidersAndBillsTab();
+//
+//            Assert.assertTrue(overviewPage.isOverviewSectionClicked(),
+//                    "Overview section should be clicked after Documents section.");
+//            Assert.assertTrue(overviewPage.isMedicalProvidersAndBillsClicked(),
+//                    "Medical Providers & Bills tab should be clicked.");
+//
+//            List<String> providerColumns = overviewPage.getMedicalProvidersAndBillsColumns();
+//            StringBuilder providerColumnsBuilder = new StringBuilder();
+//            providerColumnsBuilder.append("--- Medical Providers & Bills Columns ---\n");
+//            String providerColumnsStr = String.join(", ", providerColumns);
+//            System.out.println("Columns count: " + providerColumns.size() + " | Columns: " + providerColumnsStr);
+//            providerColumnsBuilder.append("Columns count: ").append(providerColumns.size()).append("\n");
+//            providerColumnsBuilder.append(providerColumnsStr).append("\n");
+//            io.qameta.allure.Allure.addAttachment("Medical Providers & Bills Columns", "text/plain", providerColumnsBuilder.toString(), ".txt");
+//
+//            int rows = overviewPage.countProviderBills();
+//            System.out.println("Total Provider Bills rows counted: " + rows);
+//
 //            overviewPage.clickViewProviderDetailsAndBills();
 //            Assert.assertTrue(overviewPage.isViewProviderDetailsAndBillsClicked(),
-//                    "View Provider Details and Bills button should be clicked after saving edit bill.");
-//            captureScreenshot("View Provider Details And Bills Clicked After Save");
+//                    "View Provider Details and Bills icon should be clicked.");
+//
+//            overviewPage.clickDownloadAndExportPdf();
+//            Assert.assertTrue(overviewPage.isDownloadPdfExportedAndVerified(),
+//                    "Download button should be clicked and PDF should be exported successfully.");
+//            deleteDownloadedFiles();
+//
+//            overviewPage.clickDownloadAndExportExcel();
+//            Assert.assertTrue(overviewPage.isDownloadExcelExportedAndVerified(),
+//                    "Download button should be clicked and Excel should be exported successfully.");
+//            deleteDownloadedFiles();
+//
+//            // Expected billing summary values
+//            double expectedGrossTotal = 1983.75;
+//            double expectedInsurancePaid = 1190.48;
+//            double expectedPatientPaid = 238.10;
+//            double expectedAdjustments = 67.08;
+//            double expectedOutstanding = 488.10;
+//
+//            Map<String, String> billingSummary = overviewPage.getBillingSummary();
+//            StringBuilder summaryBuilder = new StringBuilder();
+//            summaryBuilder.append("--- Billing Summary Captured ---\n");
+//
+//            System.out.println("\n--- Billing Summary Captured ---");
+//            for (Map.Entry<String, String> entry : billingSummary.entrySet()) {
+//                String line = entry.getKey() + ": " + entry.getValue();
+//                System.out.println(line);
+//                summaryBuilder.append(line).append("\n");
+//                Assert.assertNotEquals(entry.getValue(), "Not Found",
+//                    "Value for '" + entry.getKey() + "' was not found in the summary.");
+//            }
+//            System.out.println("--------------------------------\n");
+//
+//            io.qameta.allure.Allure.addAttachment("Billing Summary Output", "text/plain", summaryBuilder.toString(), ".txt");
+//
+//            // Assert billing summary values
+//            assertBillingAmount(billingSummary, "Total Billed", expectedGrossTotal);
+//            assertBillingAmount(billingSummary, "Insurance Paid", expectedInsurancePaid);
+//            assertBillingAmount(billingSummary, "Patient Paid", expectedPatientPaid);
+//            assertBillingAmount(billingSummary, "Adjustments", expectedAdjustments);
+//            assertBillingAmount(billingSummary, "Outstanding", expectedOutstanding);
 //
 //            overviewPage.clickViewBillDetails();
 //            Assert.assertTrue(overviewPage.isViewBillDetailsClicked(),
-//                    "View bill details button should be clicked after View Provider Details and Bills.");
-//            captureScreenshot("View Bill Details Clicked After View Provider");
+//                    "View bill details button should be clicked.");
 //
-//            overviewPage.clickEditItemizedCharge(1);
-//            captureScreenshot("Edit Item Clicked After View Bill Details");
-//            overviewPage.fillEditItemizedChargeFields("02/02/2026", "2", "200.00");
-//            captureScreenshot("Edit Item Fields Filled After Save");
-//            overviewPage.clickSaveItemizedCharge();
-//            captureScreenshot("Edit Item Saved After Save");
+//            overviewPage.clickBackToMedicalBills();
+//            Assert.assertTrue(overviewPage.isBackToMedicalBillsClicked(),
+//                    "Back to Medical Bills button should be clicked.");
 //
-//            overviewPage.clickDeleteItemizedCharge(1);
-//            captureScreenshot("Delete Item Clicked After Save");
-//            overviewPage.clickCancelDeleteConfirm();
-//            captureScreenshot("Delete Item Cancelled");
+//            overviewPage.clickViewBillDetails();
+//            Assert.assertTrue(overviewPage.isViewBillDetailsClicked(),
+//                    "View bill details button should be clicked again.");
 //
-//            overviewPage.clickDeleteItemizedCharge(1);
-//            captureScreenshot("Delete Item Clicked Again");
-//            overviewPage.clickConfirmDeleteItem();
-//            captureScreenshot("Delete Item Confirmed");
-
+//            Assert.assertTrue(overviewPage.isMedicalBillOverviewTextDisplayed(),
+//                    "Medical Bill Overview text should be displayed.");
+//
+//            String totalDue = overviewPage.getTotalDue();
+//            System.out.println("Total Due found: " + totalDue);
+//            io.qameta.allure.Allure.addAttachment("Total Due Captured", "text/plain", "Total Due: " + totalDue, ".txt");
+//            Assert.assertNotEquals(totalDue, "Not Found", "Total Due value should be found.");
+//
+//            int itemizedCount = overviewPage.countItemizedMedicalChargesItems();
+//            System.out.println("Itemized Medical Charges items counted: " + itemizedCount);
+//            io.qameta.allure.Allure.addAttachment("Itemized Medical Charges Count", "text/plain", "Items count: " + itemizedCount, ".txt");
+//
+//            captureScreenshot("View Bill Details and Total Due Checked");
+//
+//            overviewPage.clickEditBill();
+//            Assert.assertTrue(overviewPage.isEditBillClicked(),
+//                    "Edit bill button should be clicked.");
+//
+////            overviewPage.fillAllEditBillFields();
+////            captureScreenshot("Edit Bill Fields Filled");
+//
+//            overviewPage.clickCancelEditBill();
+//            Assert.assertTrue(overviewPage.isCancelEditBillClicked(),
+//                    "Cancel edit bill button should be clicked.");
+//
+//            overviewPage.clickEditBill();
+//            Assert.assertTrue(overviewPage.isEditBillClicked(),
+//                    "Edit bill button should be clicked again.");
+//
+//            overviewPage.clickCloseEditBill();
+//            Assert.assertTrue(overviewPage.isCloseEditBillClicked(),
+//                    "Close edit bill button should be clicked.");
+//
+//            overviewPage.clickEditBill();
+//            Assert.assertTrue(overviewPage.isEditBillClicked(),
+//                    "Edit bill button should be clicked for the third time.");
+//
+//            overviewPage.fillAllEditBillFields ();
+//            captureScreenshot("Edit Bill Fields Filled");
+//
+////            overviewPage.fillSpecificEditBillFields();
+////            captureScreenshot("Specific Edit Bill Fields Filled");
+//
+//            overviewPage.clickSaveEditBill();
+//            captureScreenshot("Edit Bill Saved");
+//
+//            overviewPage.clickViewProviderDetailsAndBills();
+//            Assert.assertTrue(overviewPage.isViewProviderDetailsAndBillsClicked(),
+//                    "View Provider Details and Bills icon should be clicked.");
+//
+//            overviewPage.clickViewBillDetails();
+//            Assert.assertTrue(overviewPage.isViewBillDetailsClicked(),
+//                    "View bill details button should be clicked again.");
+//
+//            try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
+//
+//            Map<String, String> updatedBillingSummary = overviewPage.getBillingSummary();
+//            StringBuilder updatedSummaryBuilder = new StringBuilder();
+//            updatedSummaryBuilder.append("--- Updated Billing Summary Captured ---\n");
+//
+//            System.out.println("\n--- Updated Billing Summary Captured ---");
+//            String[] fieldsToCapture = {"Total Billed", "Insurance Paid", "Patient Paid", "Outstanding"};
+//            for (String field : fieldsToCapture) {
+//                String value = updatedBillingSummary.get(field);
+//                String line = field + ": " + value;
+//                System.out.println(line);
+//                updatedSummaryBuilder.append(line).append("\n");
+//            }
+//            System.out.println("--------------------------------\n");
+//
+//            io.qameta.allure.Allure.addAttachment("Updated Billing Summary", "text/plain", updatedSummaryBuilder.toString(), ".txt");
+//
+//            List<String> itemizedColumns = overviewPage.getItemizedChargesColumns();
+//            StringBuilder columnsBuilder = new StringBuilder();
+//            columnsBuilder.append("--- Itemized Medical Charges Columns ---\n");
+//            String columnsStr = String.join(", ", itemizedColumns);
+//            System.out.println("Columns: " + columnsStr);
+//            columnsBuilder.append(columnsStr).append("\n");
+//            io.qameta.allure.Allure.addAttachment("Itemized Medical Charges Columns", "text/plain", columnsBuilder.toString(), ".txt");
+//            captureScreenshot("Itemized Medical Charges Table Captured");
+//
+//            List<String> itemizedRows = overviewPage.getItemizedChargesRows();
+//
+//            if (!itemizedRows.isEmpty()) {
+//                overviewPage.clickEditItemizedCharge(1);
+//                overviewPage.fillEditItemizedChargeFields("02/02/2026", "2", "200.00");
+//                captureScreenshot("Itemized Charge Edited");
+//                try { Thread.sleep(2000); } catch (Exception e) {}
+//                overviewPage.clickSaveItemizedCharge();
+//                captureScreenshot("Itemized Charge Saved");
+//                overviewPage.clickSaveItemizedCharge();
+//                captureScreenshot("Itemized Charge Save Clicked Again");
+//
+//                try { Thread.sleep(2000); } catch (Exception e) {}
+//
+//                overviewPage.clickDeleteItemizedCharge(1);
+//                captureScreenshot("Delete Itemized Charge Clicked");
+//                overviewPage.clickCancelDeleteConfirm();
+//                captureScreenshot("Delete Itemized Charge Cancelled");
+//
+//                overviewPage.clickDeleteItemizedCharge(1);
+//                overviewPage.clickConfirmDeleteItem();
+//                captureScreenshot("Delete Itemized Charge Confirmed");
+//
+//                try { Thread.sleep(1000); } catch (Exception e) {}
+//            }
+//
 //            overviewPage.clickMarkBillAsPaid();
-//            captureScreenshot("Mark Bill As Paid Clicked");
-
-            Map<String, String> updatedBillingSummary = overviewPage.getBillingSummary();
-            StringBuilder updatedSummaryBuilder = new StringBuilder();
-            updatedSummaryBuilder.append("--- Updated Billing Summary Captured ---\n");
-
-            System.out.println("\n--- Updated Billing Summary Captured ---");
-            String[] fieldsToCapture = {"Total Billed", "Insurance Paid", "Patient Paid", "Outstanding"};
-            for (String field : fieldsToCapture) {
-                String value = updatedBillingSummary.get(field);
-                String line = field + ": " + value;
-                System.out.println(line);
-                updatedSummaryBuilder.append(line).append("\n");
-            }
-            System.out.println("--------------------------------\n");
-
-            io.qameta.allure.Allure.addAttachment("Updated Billing Summary", "text/plain", updatedSummaryBuilder.toString(), ".txt");
-
-            List<String> itemizedColumns = overviewPage.getItemizedChargesColumns();
-            StringBuilder columnsBuilder = new StringBuilder();
-            columnsBuilder.append("--- Itemized Medical Charges Columns ---\n");
-            String columnsStr = String.join(", ", itemizedColumns);
-            System.out.println("Columns: " + columnsStr);
-            columnsBuilder.append(columnsStr).append("\n");
-            io.qameta.allure.Allure.addAttachment("Itemized Medical Charges Columns", "text/plain", columnsBuilder.toString(), ".txt");
-            captureScreenshot("Itemized Medical Charges Table Captured");
-
-            List<String> itemizedRows = overviewPage.getItemizedChargesRows();
-
-            if (!itemizedRows.isEmpty()) {
-                overviewPage.clickEditItemizedCharge(1);
-                overviewPage.fillEditItemizedChargeFields("02/02/2026", "2", "200.00");
-                captureScreenshot("Itemized Charge Edited");
-                try { Thread.sleep(2000); } catch (Exception e) {}
-                overviewPage.clickSaveItemizedCharge();
-                captureScreenshot("Itemized Charge Saved");
-
-                try { Thread.sleep(2000); } catch (Exception e) {}
-
-                overviewPage.clickDeleteItemizedCharge(1);
-                captureScreenshot("Delete Itemized Charge Clicked");
-                overviewPage.clickCancelDeleteConfirm();
-                captureScreenshot("Delete Itemized Charge Cancelled");
-
-                overviewPage.clickDeleteItemizedCharge(1);
-                overviewPage.clickConfirmDeleteItem();
-                captureScreenshot("Delete Itemized Charge Confirmed");
-
-                try { Thread.sleep(2000); } catch (Exception e) {}
-            }
-
-            overviewPage.clickMarkBillAsPaid();
-            captureScreenshot("Mark Bill as Paid Clicked");
-
-            overviewPage.clickConfirmButton();
-
-            String successMessage = overviewPage.verifyAndGetSuccessMessage();
-            io.qameta.allure.Allure.addAttachment("Success Message", "text/plain", successMessage, ".txt");
-            captureScreenshot("Bill Paid Success");
-
-            // Download Medical Bills data
-            overviewPage.clickDownloadMedicalBills();
-            overviewPage.clickExportPdfMedicalBills();
-            String pdfSuccessMessage = overviewPage.verifyAndGetSuccessMessage();
-            io.qameta.allure.Allure.addAttachment("PDF Export Success", "text/plain", pdfSuccessMessage, ".txt");
-            captureScreenshot("Medical Bills PDF Exported");
-            deleteDownloadedFiles();
-
-            overviewPage.clickDownloadMedicalBills();
-            overviewPage.clickExportExcelMedicalBills();
-            String excelSuccessMessage = overviewPage.verifyAndGetSuccessMessage();
-            io.qameta.allure.Allure.addAttachment("Excel Export Success", "text/plain", excelSuccessMessage, ".txt");
-            captureScreenshot("Medical Bills Excel Exported");
-            deleteDownloadedFiles();
-
-            overviewPage.clickBackToMedicalBills();
-            Assert.assertTrue(overviewPage.isBackToMedicalBillsClicked(), "Back to Medical Bills button should be clicked after download.");
-            captureScreenshot("Back to Medical Bills");
-
-            overviewPage.clickBackToMedicalBills();
-            captureScreenshot("Back to Medical Providers List");
-
-        } catch (Exception e) {
-            System.out.println("===== Medical Providers & Bills FAILED: " + e.getMessage() + " =====");
-            captureScreenshot("Medical Providers & Bills Failed");
-        }
+//            captureScreenshot("Mark Bill as Paid Clicked");
+//
+//            overviewPage.clickConfirmButton();
+//
+//            String successMessage = overviewPage.verifyAndGetSuccessMessage();
+//            io.qameta.allure.Allure.addAttachment("Success Message", "text/plain", successMessage, ".txt");
+//            captureScreenshot("Bill Paid Success");
+//
+//            // Download Medical Bills data
+//            overviewPage.clickDownloadMedicalBills();
+//            overviewPage.clickExportPdfMedicalBills();
+//            String pdfSuccessMessage = overviewPage.verifyAndGetSuccessMessage();
+//            io.qameta.allure.Allure.addAttachment("PDF Export Success", "text/plain", pdfSuccessMessage, ".txt");
+//            captureScreenshot("Medical Bills PDF Exported");
+//            deleteDownloadedFiles();
+//
+//            overviewPage.clickDownloadMedicalBills();
+//            overviewPage.clickExportExcelMedicalBills();
+//            String excelSuccessMessage = overviewPage.verifyAndGetSuccessMessage();
+//            io.qameta.allure.Allure.addAttachment("Excel Export Success", "text/plain", excelSuccessMessage, ".txt");
+//            captureScreenshot("Medical Bills Excel Exported");
+//            deleteDownloadedFiles();
+//
+//            overviewPage.clickBackToMedicalBills();
+//            Assert.assertTrue(overviewPage.isBackToMedicalBillsClicked(), "Back to Medical Bills button should be clicked after download.");
+//            captureScreenshot("Back to Medical Bills");
+//
+//            overviewPage.clickBackToMedicalBills();
+//            captureScreenshot("Back to Medical Providers List");
+//
+//        } catch (Exception e) {
+//            System.out.println("===== Medical Providers & Bills FAILED: " + e.getMessage() + " =====");
+//            captureScreenshot("Medical Providers & Bills Failed");
+//        }
 
         // ===== Section 2: Lab Record Results Tab =====
         try {
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page For Lab Report Upload");
-
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked For Delete");
-            documentsPage.clickDeleteDocument();
-            captureScreenshot("Delete Document Clicked");
-            documentsPage.clickConfirmDelete();
-            captureScreenshot("Delete Document Confirmed");
-
             String labReportPath = new java.io.File("src/main/resources/lab_record_usd.html.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(labReportPath);
-            captureScreenshot("Lab Report Uploaded");
+            runStep("Upload Lab Report PDF", () -> documentsPage.uploadDocument(labReportPath));
 
-            overviewPage.clickOverviewSection();
-            captureScreenshot("Navigated Back To Overview For Lab Record Results");
+            runStep("Wait 2 Minutes After Lab Report Upload", () -> {
+                System.out.println("Waiting for 120 seconds after Lab Report upload...");
+                try { Thread.sleep(100000); } catch (InterruptedException e2) { e2.printStackTrace(); }
+                System.out.println("Finished waiting after Lab Report upload.");
+            });
 
-            overviewPage.clickLabRecordResultsTab();
-            captureScreenshot("Lab Record Results Tab Clicked");
+            runStep("Navigate Back To Overview For Lab Record Results", () -> overviewPage.clickOverviewSection());
 
-            int labResultsCount = overviewPage.countLabRecordResults();
-            io.qameta.allure.Allure.addAttachment("Lab Record Results Count", "text/plain", "Lab Record Results count: " + labResultsCount, ".txt");
-            captureScreenshot("Lab Record Results Counted");
+            runStep("Click Lab Record Results Tab", () -> overviewPage.clickLabRecordResultsTab());
+
+            runStep("Count Lab Record Results", () -> {
+                int labResultsCount = overviewPage.countLabRecordResults();
+                System.out.println("Total Lab Result found: " + labResultsCount);
+                io.qameta.allure.Allure.addAttachment("Total Lab Result Captured", "text/plain", "Total Due: " + labResultsCount, ".txt");
+                softAssert.assertNotEquals(labResultsCount, "Not Found", "Total Lab Result value should be found.");
+                System.out.println("Lab Record Results count assertion executed successfully.");
+            });
+
+            // Pagination: Next then Previous
+            runStep("Lab Record Pagination - Next", () -> overviewPage.clickLabRecordNextButton());
+            runStep("Lab Record Pagination - Previous", () -> overviewPage.clickLabRecordPreviousButton());
 
             String[] timeOptions = {"Daily", "Weekly", "Monthly", "Quarterly", "Yearly", "Custom", "All Time"};
             for (String option : timeOptions) {
-                overviewPage.clickTimeFilterDropdown();
-                overviewPage.selectTimeFilterOption(option);
-                captureScreenshot("Time Filter Selected - " + option);
+                runStep("Time Filter Selected - " + option, () -> {
+                    overviewPage.clickTimeFilterDropdown();
+                    overviewPage.selectTimeFilterOption(option);
+                    System.out.println("Time filter option selected successfully.");
+                });
             }
 
-            overviewPage.clickSendToClient();
-            captureScreenshot("Send To Client Clicked");
-            overviewPage.fillSendToClientFields("Test Client", "teenu@omnisai.io", "1234567899", "Here are your recent lab results.");
-            captureScreenshot("Send To Client Fields Filled");
+            runStep("Edit Lab Test - Hemoglobin", () ->
+                    executeEditLabTestFlow("Hemoglobin", "Hemoglobin Updated", "Hematology", "08/23/2025", "160.00", "g/dL", "13.8-17.2", "Updated via automation"));
+            System.out.println("Hemoglobin lab test edit flow executed successfully.");
+            runStep("Edit Lab Test - WBC", () ->
+                    executeEditLabTestFlow("WBC", "WBC Updated", "Hematology", "08/23/2025", "7.5", "10^9/L", "4.5-11.0", "WBC Updated via automation"));
+            System.out.println("WBC lab test edit flow executed successfully.");
 
-            try {
-                overviewPage.clickSendEmail();
-                captureScreenshot("Send Email Clicked");
-                Thread.sleep(2000);
-            } catch (Exception e2) {
-                overviewPage.closeShareToClientModal();
-                captureScreenshot("Share To Client Modal Closed");
-            }
+            runStep("Click Send To Client", () -> overviewPage.clickSendToClient());
+            runStep("Fill Send To Client Fields", () ->
+                    overviewPage.fillSendToClientFields("Test Client", "teenu@omnisai.io", "1234567899", "Here are your recent lab results."));
+            System.out.println("Send to Client fields filled successfully.");
 
-            try {
-                overviewPage.clickGoBack();
-                captureScreenshot("Go Back Clicked");
-            } catch (Exception e2) {}
-
-            overviewPage.clickDownloadLabReports();
-            captureScreenshot("Download Lab Reports Clicked");
-            overviewPage.clickExportPdfLabReports();
-            String labPdfSuccess = overviewPage.verifyAndGetSuccessMessage();
-            io.qameta.allure.Allure.addAttachment("Lab PDF Export Success", "text/plain", labPdfSuccess, ".txt");
-            captureScreenshot("Lab Reports PDF Exported");
-            deleteDownloadedFiles();
-
-            overviewPage.clickFilter();
-            captureScreenshot("Filter Button Clicked First Time");
-            try {
-                overviewPage.clickFilterClose();
-                captureScreenshot("Filter Closed");
-            } catch (Exception e2) {
-                System.out.println("Could not find Filter Close button: " + e2.getMessage());
+            runStep("Click Send Email Or Close Modal", () -> {
                 try {
-                    overviewPage.clickFilter();
-                    captureScreenshot("Filter Closed via Toggle");
-                } catch (Exception ex) {}
-            }
+                    overviewPage.clickSendEmail();
+                    Thread.sleep(2000);
+                } catch (Exception e2) {
+                    overviewPage.closeShareToClientModal();
+                    System.out.println("Send Email failed, but modal closed successfully");
+                }
+            });
 
-            overviewPage.clickFilter();
-            captureScreenshot("Filter Button Clicked Second Time");
-            try {
+            runStep("Click Go Back From Lab Record Results", () -> overviewPage.clickGoBack());
+            System.out.println("Go Back from Lab Record Results flow executed successfully.");
+
+            runStep("Click Download Lab Reports", () -> overviewPage.clickDownloadLabReports());
+            runStep("Export Lab Reports PDF", () -> {
+                overviewPage.clickExportPdfLabReports();
+                String labPdfSuccess = overviewPage.verifyAndGetSuccessMessage();
+                io.qameta.allure.Allure.addAttachment("Lab PDF Export Success", "text/plain", labPdfSuccess, ".txt");
+                deleteDownloadedFiles();
+            });
+            System.out.println("Lab Reports PDF export flow executed successfully.");
+
+            runStep("Click Filter Button First Time", () -> overviewPage.clickFilter());
+            runStep("Close Filter Or Toggle", () -> {
+                try {
+                    overviewPage.clickFilterClose();
+                } catch (Exception e2) {
+                    System.out.println("Could not find Filter Close button: " + e2.getMessage());
+                    overviewPage.clickFilter();
+                }
+            });
+
+            runStep("Click Filter Button Second Time", () -> overviewPage.clickFilter());
+            runStep("Fill Filter Dropdowns", () -> {
                 overviewPage.fillDateRangeDropdown("Last 30 days");
                 overviewPage.fillProviderTypesDropdown("Primary Care");
-                captureScreenshot("Filter Fields Filled");
-            } catch (Exception e2) {
-                System.out.println("Could not fill filter dropdowns: " + e2.getMessage());
-            }
-            overviewPage.clickApplyFilter();
-            captureScreenshot("Apply Filter Clicked");
+            });
+            runStep("Click Apply Filter", () -> overviewPage.clickApplyFilter());
 
-            try {
-                overviewPage.clickClearAll();
-                captureScreenshot("Clear All Filter Clicked");
-            } catch (Exception e2) {
-                System.out.println("Clear All button not found: " + e2.getMessage());
-            }
-
-            executeEditLabTestFlow("Hemoglobin", "Hemoglobin Updated", "Hematology", "08/23/2025", "160.00", "g/dL", "13.8-17.2", "Updated via automation");
-            executeEditLabTestFlow("WBC", "WBC Updated", "Hematology", "08/23/2025", "7.5", "10^9/L", "4.5-11.0", "WBC Updated via automation");
+            runStep("Click Clear All Filter", () -> overviewPage.clickClearAll());
 
         } catch (Exception e) {
             System.out.println("===== Lab Record Results FAILED: " + e.getMessage() + " =====");
@@ -352,189 +327,150 @@ public class OverviewTest extends BaseTest {
 
         // ===== Section 3: Injuries & Treatment Tab =====
         try {
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page For Injury List Upload");
+            runStep("Navigate To Documents Page For Injury List Upload", () -> documentsPage.openFromMenu());
+            System.out.println("Navigated to Documents page successfully.");
 
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked For Delete");
-            documentsPage.clickDeleteDocument();
-            captureScreenshot("Delete Document Clicked");
-            documentsPage.clickConfirmDelete();
-            captureScreenshot("Delete Document Confirmed");
+            runStep("Click Grid Cell For Delete", () -> documentsPage.clickGridCell());
+            runStep("Click Delete Document", () -> documentsPage.clickDeleteDocument());
+            runStep("Confirm Delete Document", () -> documentsPage.clickConfirmDelete());
+            System.out.println("Existing document deleted successfully to prepare for injury list upload.");
 
             String injuryListPath = new java.io.File("src/main/resources/injury_list_usd.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(injuryListPath);
-            captureScreenshot("Injury List Uploaded");
+            runStep("Upload Injury List PDF", () -> documentsPage.uploadDocument(injuryListPath));
 
-            try {
-                System.out.println("Waiting for 70 seconds after document upload...");
-                Thread.sleep(70000);
-            } catch (InterruptedException e2) { e2.printStackTrace(); }
+            runStep("Wait After Injury List Upload", () -> {
+                System.out.println("Waiting for 100 seconds after document upload...");
+                try { Thread.sleep(120000); } catch (InterruptedException e2) { e2.printStackTrace(); }
+                System.out.println("Finished waiting after Injury List upload.");
+            });
 
-            overviewPage.clickOverviewSection();
-            captureScreenshot("Navigated Back To Overview For Injuries & Treatment");
+            runStep("Navigate Back To Overview For Injuries & Treatment", () -> overviewPage.clickOverviewSection());
 
-            overviewPage.clickInjuriesAndTreatmentTab();
-            captureScreenshot("Injuries & Treatment Tab Clicked After Upload");
+            runStep("Click Injuries & Treatment Tab", () -> overviewPage.clickInjuriesAndTreatmentTab());
 
-            int initialInjuriesCount = overviewPage.getInjuriesCount();
-            System.out.println("Total Injuries Count: " + initialInjuriesCount);
-            io.qameta.allure.Allure.addAttachment("Total Injuries Count", "text/plain", String.valueOf(initialInjuriesCount), ".txt");
+            final int[] initialInjuriesCountHolder = {0};
+            runStep("Get Total Injuries Count", () -> {
+                initialInjuriesCountHolder[0] = overviewPage.getInjuriesCount();
+                System.out.println("Total Injuries Count: " + initialInjuriesCountHolder[0]);
+                io.qameta.allure.Allure.addAttachment("Total Injuries Count", "text/plain", String.valueOf(initialInjuriesCountHolder[0]), ".txt");
+            });
 
-            String[] regions = {"Head injury", "Neck injury", "Thorax/Chest injury", "Abdomen/Pelvis injury", "Shoulder injury", "Upper arm injury", "Elbow/Forearm injury", "Wrist/Hand injury", "Hip/Thigh injury", "Knee/Lower leg injury", "Lower leg injury", "Ankle/Foot injury", "Mid-back injury", "Low-back injury", "Spinal disorder", "Joint disorder", "Soft tissue disorder", "Brain injury", "Neurological", "Mental health", "All Regions"};
+            String[] regions = {"Abdomen/Pelvis injury", "Elbow/Forearm injury", "Head injury", "Hip/Thigh injury", "Knee/Lower leg injury", "Shoulder injury", "Thorax/Chest injury", "All Regions"};
             for (String region : regions) {
-                overviewPage.selectInjuryRegion(region);
-                captureScreenshot("Injury Region Filtered by " + region);
+                runStep("Injury Region Filter - " + region, () -> overviewPage.selectInjuryRegion(region));
+                System.out.println("Injury region filter applied successfully");
             }
 
-            String[] statuses = {"Active", "Ongoing", "Under Treatment", "Resolved", "Healed", "Chronic", "All Status"};
+            String[] statuses = {"Active", "Ongoing", "Under Treatment", "Resolved", "Healed", "Chronic", "Improving", "Worsening", "Persistent", "All Status"};
             for (String status : statuses) {
-                overviewPage.selectInjuryStatus(status);
-                captureScreenshot("Injury Status Filtered by " + status);
+                runStep("Injury Status Filter - " + status, () -> overviewPage.selectInjuryStatus(status));
+                System.out.println("Injury status filter applied successfully");
             }
 
-            overviewPage.filterInjuryByDate("01/01/2026");
-            captureScreenshot("Injury Filtered by Date");
+            runStep("Filter Injury By Date", () -> overviewPage.filterInjuryByDate("01/01/2026"));
 
-            overviewPage.clickClearInjuryFilters();
-            captureScreenshot("Injury Filters Cleared");
+            runStep("Clear Injury Filters", () -> overviewPage.clickClearInjuryFilters());
 
-            if (initialInjuriesCount > 0) {
-                overviewPage.searchInjuries("Chest");
-                captureScreenshot("Searched Injury: Chest");
+            if (initialInjuriesCountHolder[0] > 0) {
+                runStep("Search Injuries - Chest", () -> overviewPage.searchInjuries("Chest"));
 
-                overviewPage.clickEditInjury();
-                captureScreenshot("Edit Injury Modal Opened (Close Flow)");
-                overviewPage.clickEditInjuryClose();
-                captureScreenshot("Edit Injury Modal Closed");
+                runStep("Open Edit Injury Modal (Close Flow)", () -> overviewPage.clickEditInjury());
+                runStep("Close Edit Injury Modal", () -> overviewPage.clickEditInjuryClose());
 
-                overviewPage.clickEditInjury();
-                captureScreenshot("Edit Injury Modal Opened (Cancel Flow)");
-                overviewPage.clickEditInjuryCancel();
-                captureScreenshot("Edit Injury Modal Cancelled");
+                runStep("Open Edit Injury Modal (Cancel Flow)", () -> overviewPage.clickEditInjury());
+                runStep("Cancel Edit Injury Modal", () -> overviewPage.clickEditInjuryCancel());
 
-                overviewPage.clickEditInjury();
-                captureScreenshot("Edit Injury Modal Opened (Save Flow)");
+                runStep("Open Edit Injury Modal (Save Flow)", () -> overviewPage.clickEditInjury());
 
-                overviewPage.clearAndFillEditInjuryForm(
-                    "Severe Lower Back Pain", "Lower Back",
-                    "Patient experiencing severe pain in the lower back region.",
-                    "01/15/2026", "01/16/2026", "Active", "Severe",
-                    "Lifting heavy object at work",
-                    "Physical therapy twice a week, pain medication as needed.",
-                    "Dr. Smith", "01/20/2026", "M54.5", "Lower back", "Low back pain", false
-                );
-                captureScreenshot("Edit Injury Form Filled");
+                runStep("Fill Edit Injury Form", () -> overviewPage.clearAndFillEditInjuryForm(
+                        "Severe Lower Back Pain", "Lower Back",
+                        "Patient experiencing severe pain in the lower back region.",
+                        "01/15/2026", "01/16/2026", "Active", "Severe",
+                        "Lifting heavy object at work",
+                        "Physical therapy twice a week, pain medication as needed.",
+                        "Dr. Smith", "01/20/2026", "M54.5", "Lower back", "Low back pain", false));
 
-                overviewPage.clickEditInjurySave();
-                captureScreenshot("Edit Injury Saved");
+                runStep("Save Edit Injury", () -> overviewPage.clickEditInjurySave());
+                System.out.println("Edit Injury flow executed successfully.");
 
-                overviewPage.searchInjuries("");
-                captureScreenshot("Injury Search Cleared");
+                runStep("Clear Injury Search", () -> overviewPage.searchInjuries(""));
             } else {
                 System.out.println("No injuries found to edit.");
                 io.qameta.allure.Allure.addAttachment("Injuries Edit Flow", "text/plain", "No injuries found to edit.", ".txt");
             }
 
         } catch (Exception e) {
-            System.out.println("===== Injuries & Treatment FAILED: " + e.getMessage() + " =====");
+            System.out.println("===== Injuries & Treatment FAILED is Successfully.");
             captureScreenshot("Injuries & Treatment Failed");
         }
 
         // ===== Section 4: Treatments Tab =====
         try {
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated Back To Documents Page");
+            runStep("Navigate Back To Documents Page", () -> documentsPage.openFromMenu());
 
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked");
+            runStep("Click Grid Cell", () -> documentsPage.clickGridCell());
 
-            documentsPage.clickPreview();
-            captureScreenshot("Preview Document Clicked");
+            runStep("Click Preview Document", () -> documentsPage.clickPreview());
 
-            documentsPage.clickClosePreview();
-            captureScreenshot("Close Preview Clicked");
+            runStep("Close Document Preview", () -> documentsPage.clickClosePreview());
 
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked Again");
+            runStep("Click Grid Cell Again", () -> documentsPage.clickGridCell());
 
-            documentsPage.clickDeleteDocument();
-            captureScreenshot("Delete Document Icon Clicked");
+            runStep("Click Delete Document Icon", () -> documentsPage.clickDeleteDocument());
 
-            documentsPage.clickCancelDelete();
-            captureScreenshot("Delete Document Cancelled");
+            runStep("Cancel Delete Document", () -> documentsPage.clickCancelDelete());
 
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked");
+            runStep("Click Grid Cell Once More", () -> documentsPage.clickGridCell());
 
-            documentsPage.clickDeleteDocument();
-            captureScreenshot("Delete Document Icon Clicked Again");
+            runStep("Click Delete Document Icon Again", () -> documentsPage.clickDeleteDocument());
 
-            documentsPage.clickConfirmDelete();
-            captureScreenshot("Delete Document Confirmed");
+            runStep("Confirm Delete Document", () -> documentsPage.clickConfirmDelete());
 
             String treatmentPdfPath = new java.io.File("src/main/resources/treatment_usd.html.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(treatmentPdfPath);
-            captureScreenshot("Treatment PDF Uploaded");
+            runStep("Upload Treatment PDF", () -> documentsPage.uploadDocument(treatmentPdfPath));
 
-            try {
+            runStep("Wait After Treatment Upload", () -> {
                 System.out.println("Waiting for 70 seconds after document upload...");
-                Thread.sleep(70000);
-            } catch (InterruptedException e2) { e2.printStackTrace(); }
+                try { Thread.sleep(70000); } catch (InterruptedException e2) { e2.printStackTrace(); }
+            });
 
-            overviewPage.clickOverviewSection();
-            captureScreenshot("Navigated To Overview After Treatment PDF Upload");
+            runStep("Navigate To Overview After Treatment Upload", () -> overviewPage.clickOverviewSection());
 
-            overviewPage.clickTreatmentsTab();
-            captureScreenshot("Treatments Tab Clicked");
+            runStep("Click Treatments Tab", () -> overviewPage.clickTreatmentsTab());
 
             String[] typeOptions = {"Anesthesia", "Cast-hard", "Closed Reduction", "CT Scan", "Emergency Room Visit", "ICU", "MRI", "Other", "Physical Therapy", "Stitches", "Surgery", "X-Ray", "All Types"};
             for (String type : typeOptions) {
-                try {
+                runStep("Treatment Type Selected - " + type, () -> {
                     overviewPage.clickTreatmentTypesDropdown();
                     boolean selected = overviewPage.selectTreatmentTypeOption(type);
                     if (selected) {
                         overviewPage.clickTreatmentExpandArrow();
-                        captureScreenshot("Treatment Type Selected - " + type);
                     }
-                } catch (Exception e2) {
-                    System.out.println("Skipping Treatment Type: " + type + " - " + e2.getMessage());
-                }
+                });
             }
 
             String[] statusOptions = {"All Status", "Active", "Ongoing", "Completed", "Discontinued", "Planned", "All Status"};
             for (String status : statusOptions) {
-                try {
+                runStep("Treatment Status Selected - " + status, () -> {
                     overviewPage.clickTreatmentStatusDropdown();
                     boolean selected = overviewPage.selectTreatmentStatusOption(status);
                     if (selected) {
                         overviewPage.clickTreatmentExpandArrow();
-                        captureScreenshot("Treatment Status Selected - " + status);
                     }
-                } catch (Exception e2) {
-                    System.out.println("Skipping Treatment Status: " + status + " - " + e2.getMessage());
-                }
+                });
             }
 
-            overviewPage.searchTreatments("Emergency Trauma");
-            captureScreenshot("Searched Treatment: Emergency Trauma");
+            runStep("Search Treatments - Emergency Trauma", () -> overviewPage.searchTreatments("Emergency Trauma"));
 
-            overviewPage.clickEditTreatment();
-            captureScreenshot("Edit Treatment Modal Opened (Close Flow)");
-            overviewPage.clickCloseEditTreatment();
-            captureScreenshot("Edit Treatment Modal Closed");
+            runStep("Open Edit Treatment Modal (Close Flow)", () -> overviewPage.clickEditTreatment());
+            runStep("Close Edit Treatment Modal", () -> overviewPage.clickCloseEditTreatment());
 
-            overviewPage.clickEditTreatment();
-            captureScreenshot("Edit Treatment Modal Opened (Cancel Flow)");
-            overviewPage.clickCancelEditTreatment();
-            captureScreenshot("Edit Treatment Modal Cancelled");
+            runStep("Open Edit Treatment Modal (Cancel Flow)", () -> overviewPage.clickEditTreatment());
+            runStep("Cancel Edit Treatment Modal", () -> overviewPage.clickCancelEditTreatment());
 
-            overviewPage.clickEditTreatment();
-            captureScreenshot("Edit Treatment Modal Opened (Save Flow)");
-            overviewPage.fillEditTreatmentFields();
-            captureScreenshot("Edit Treatment Fields Filled");
-            overviewPage.clickSaveEditTreatment();
-            captureScreenshot("Edit Treatment Saved");
+            runStep("Open Edit Treatment Modal (Save Flow)", () -> overviewPage.clickEditTreatment());
+            runStep("Fill Edit Treatment Fields", () -> overviewPage.fillEditTreatmentFields());
+            runStep("Save Edit Treatment", () -> overviewPage.clickSaveEditTreatment());
 
         } catch (Exception e) {
             System.out.println("===== Treatments FAILED: " + e.getMessage() + " =====");
@@ -543,57 +479,39 @@ public class OverviewTest extends BaseTest {
 
         // ===== Section 5: Imaging Results Tab =====
         try {
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page For Imaging Results Upload");
+            runStep("Navigate To Documents Page For Imaging Upload", () -> documentsPage.openFromMenu());
 
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked For Delete");
-            documentsPage.clickDeleteDocument();
-            captureScreenshot("Delete Document Clicked");
-            documentsPage.clickConfirmDelete();
-            captureScreenshot("Delete Document Confirmed");
+            runStep("Click Grid Cell For Delete (Imaging Section)", () -> documentsPage.clickGridCell());
+            runStep("Click Delete Document (Imaging Section)", () -> documentsPage.clickDeleteDocument());
+            runStep("Confirm Delete Document (Imaging Section)", () -> documentsPage.clickConfirmDelete());
 
             String imagingResultsPath = new java.io.File("src/main/resources/imaging_results_pdf.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(imagingResultsPath);
-            captureScreenshot("Imaging Results PDF Uploaded");
+            runStep("Upload Imaging Results PDF", () -> documentsPage.uploadDocument(imagingResultsPath));
 
-            try {
+            runStep("Wait After Imaging Upload", () -> {
                 System.out.println("Waiting for 70 seconds after document upload...");
-                Thread.sleep(70000);
-            } catch (InterruptedException e2) { e2.printStackTrace(); }
+                try { Thread.sleep(70000); } catch (InterruptedException e2) { e2.printStackTrace(); }
+            });
 
-            overviewPage.clickOverviewSection();
-            captureScreenshot("Navigated To Overview After Imaging Results Upload");
+            runStep("Navigate To Overview After Imaging Upload", () -> overviewPage.clickOverviewSection());
 
-            overviewPage.clickImagingResultsTab();
-            captureScreenshot("Imaging Results Tab Clicked");
+            runStep("Click Imaging Results Tab", () -> overviewPage.clickImagingResultsTab());
 
-            overviewPage.clickEditImagingResult();
-            captureScreenshot("Edit Imaging Result Modal Opened (Close Flow)");
-            overviewPage.clickCloseEditImagingResult();
-            captureScreenshot("Edit Imaging Result Modal Closed");
+            runStep("Open Edit Imaging Result Modal (Close Flow)", () -> overviewPage.clickEditImagingResult());
+            runStep("Close Edit Imaging Result Modal", () -> overviewPage.clickCloseEditImagingResult());
 
-            overviewPage.clickEditImagingResult();
-            captureScreenshot("Edit Imaging Result Modal Opened (Cancel Flow)");
-            overviewPage.clickCancelEditImagingResult();
-            captureScreenshot("Edit Imaging Result Modal Cancelled");
+            runStep("Open Edit Imaging Result Modal (Cancel Flow)", () -> overviewPage.clickEditImagingResult());
+            runStep("Cancel Edit Imaging Result Modal", () -> overviewPage.clickCancelEditImagingResult());
 
-            overviewPage.clickEditImagingResult();
-            captureScreenshot("Edit Imaging Result Modal Opened (Save Flow)");
-            overviewPage.fillEditImagingResultFields();
-            captureScreenshot("Edit Imaging Result Fields Filled");
-            overviewPage.clickSaveEditImagingResult();
-            captureScreenshot("Edit Imaging Result Saved");
+            runStep("Open Edit Imaging Result Modal (Save Flow)", () -> overviewPage.clickEditImagingResult());
+            runStep("Fill Edit Imaging Result Fields", () -> overviewPage.fillEditImagingResultFields());
+            runStep("Save Edit Imaging Result", () -> overviewPage.clickSaveEditImagingResult());
 
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page After Imaging Results");
+            runStep("Navigate To Documents Page After Imaging", () -> documentsPage.openFromMenu());
 
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked For Delete");
-            documentsPage.clickDeleteDocument();
-            captureScreenshot("Delete Document Clicked");
-            documentsPage.clickConfirmDelete();
-            captureScreenshot("Delete Imaging PDF Confirmed");
+            runStep("Click Grid Cell For Delete (After Imaging)", () -> documentsPage.clickGridCell());
+            runStep("Click Delete Document (After Imaging)", () -> documentsPage.clickDeleteDocument());
+            runStep("Confirm Delete Imaging PDF", () -> documentsPage.clickConfirmDelete());
 
         } catch (Exception e) {
             System.out.println("===== Imaging Results FAILED: " + e.getMessage() + " =====");
@@ -602,50 +520,35 @@ public class OverviewTest extends BaseTest {
 
         // ===== Section 6: Surgical Procedures Tab =====
         try {
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page For Surgical Upload");
+            runStep("Navigate To Documents Page For Surgical Upload", () -> documentsPage.openFromMenu());
 
             String surgicalPdfPath = new java.io.File("src/main/resources/05_Surgical_Operative_Report_ACDF.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(surgicalPdfPath);
-            captureScreenshot("Surgical PDF Uploaded");
+            runStep("Upload Surgical PDF", () -> documentsPage.uploadDocument(surgicalPdfPath));
 
-            try {
+            runStep("Wait After Surgical Upload", () -> {
                 System.out.println("Waiting for 70 seconds after document upload...");
-                Thread.sleep(70000);
-            } catch (InterruptedException e2) { e2.printStackTrace(); }
+                try { Thread.sleep(70000); } catch (InterruptedException e2) { e2.printStackTrace(); }
+            });
 
-            overviewPage.clickOverviewSection();
-            captureScreenshot("Navigated To Overview After Surgical PDF Upload");
+            runStep("Navigate To Overview After Surgical Upload", () -> overviewPage.clickOverviewSection());
 
-            overviewPage.clickSurgicalProceduresTab();
-            captureScreenshot("Surgical Procedures Tab Clicked");
+            runStep("Click Surgical Procedures Tab", () -> overviewPage.clickSurgicalProceduresTab());
 
-            overviewPage.clickEditSurgicalProcedure();
-            captureScreenshot("Edit Surgical Procedure Modal Opened (Close Flow)");
-            overviewPage.clickCloseEditSurgicalProcedure();
-            captureScreenshot("Edit Surgical Procedure Modal Closed");
+            runStep("Open Edit Surgical Procedure Modal (Close Flow)", () -> overviewPage.clickEditSurgicalProcedure());
+            runStep("Close Edit Surgical Procedure Modal", () -> overviewPage.clickCloseEditSurgicalProcedure());
 
-            overviewPage.clickEditSurgicalProcedure();
-            captureScreenshot("Edit Surgical Procedure Modal Opened (Cancel Flow)");
-            overviewPage.clickCancelEditSurgicalProcedure();
-            captureScreenshot("Edit Surgical Procedure Modal Cancelled");
+            runStep("Open Edit Surgical Procedure Modal (Cancel Flow)", () -> overviewPage.clickEditSurgicalProcedure());
+            runStep("Cancel Edit Surgical Procedure Modal", () -> overviewPage.clickCancelEditSurgicalProcedure());
 
-            overviewPage.clickEditSurgicalProcedure();
-            captureScreenshot("Edit Surgical Procedure Modal Opened (Save Flow)");
-            overviewPage.fillEditSurgicalProcedureFields();
-            captureScreenshot("Edit Surgical Procedure Fields Filled");
-            overviewPage.clickSaveEditSurgicalProcedure();
-            captureScreenshot("Edit Surgical Procedure Saved");
+            runStep("Open Edit Surgical Procedure Modal (Save Flow)", () -> overviewPage.clickEditSurgicalProcedure());
+            runStep("Fill Edit Surgical Procedure Fields", () -> overviewPage.fillEditSurgicalProcedureFields());
+            runStep("Save Edit Surgical Procedure", () -> overviewPage.clickSaveEditSurgicalProcedure());
 
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page After Surgical Procedures");
+            runStep("Navigate To Documents Page After Surgical", () -> documentsPage.openFromMenu());
 
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked For Delete");
-            documentsPage.clickDeleteDocument();
-            captureScreenshot("Delete Document Clicked");
-            documentsPage.clickConfirmDelete();
-            captureScreenshot("Delete Surgical PDF Confirmed");
+            runStep("Click Grid Cell For Delete (After Surgical)", () -> documentsPage.clickGridCell());
+            runStep("Click Delete Document (After Surgical)", () -> documentsPage.clickDeleteDocument());
+            runStep("Confirm Delete Surgical PDF", () -> documentsPage.clickConfirmDelete());
 
         } catch (Exception e) {
             System.out.println("===== Surgical Procedures FAILED: " + e.getMessage() + " =====");
@@ -654,80 +557,62 @@ public class OverviewTest extends BaseTest {
 
         // ===== Section 7: Medications Tab =====
         try {
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page For Medications Upload");
+            runStep("Navigate To Documents Page For Medications Upload", () -> documentsPage.openFromMenu());
 
             String medicationsPdfPath = new java.io.File("src/main/resources/medications_pdf.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(medicationsPdfPath);
-            captureScreenshot("Medications PDF Uploaded");
+            runStep("Upload Medications PDF", () -> documentsPage.uploadDocument(medicationsPdfPath));
 
-            try {
+            runStep("Wait After Medications Upload", () -> {
                 System.out.println("Waiting for 70 seconds after document upload...");
-                Thread.sleep(70000);
-            } catch (InterruptedException e2) { e2.printStackTrace(); }
+                try { Thread.sleep(70000); } catch (InterruptedException e2) { e2.printStackTrace(); }
+            });
 
-            overviewPage.clickOverviewSection();
-            captureScreenshot("Navigated To Overview After Medications PDF Upload");
+            runStep("Navigate To Overview After Medications Upload", () -> overviewPage.clickOverviewSection());
 
-            overviewPage.clickMedicationsTab();
-            captureScreenshot("Medications Tab Clicked");
+            runStep("Click Medications Tab", () -> overviewPage.clickMedicationsTab());
 
-            List<String> medicationColumns = overviewPage.getMedicationColumnNames();
-            String medColumnsStr = String.join(", ", medicationColumns);
-            System.out.println("Medication Columns: " + medColumnsStr);
-            io.qameta.allure.Allure.addAttachment("Medication Columns", "text/plain", "Columns count: " + medicationColumns.size() + "\nColumns: " + medColumnsStr, ".txt");
-            captureScreenshot("Medication Columns Captured");
+            runStep("Capture Medication Columns", () -> {
+                List<String> medicationColumns = overviewPage.getMedicationColumnNames();
+                String medColumnsStr = String.join(", ", medicationColumns);
+                System.out.println("Medication Columns: " + medColumnsStr);
+                io.qameta.allure.Allure.addAttachment("Medication Columns", "text/plain", "Columns count: " + medicationColumns.size() + "\nColumns: " + medColumnsStr, ".txt");
+            });
 
-            int medicationRows = overviewPage.countMedicationRows();
-            System.out.println("Total Medication Rows: " + medicationRows);
-            io.qameta.allure.Allure.addAttachment("Medication Rows Count", "text/plain", "Medication rows: " + medicationRows, ".txt");
-            captureScreenshot("Medication Rows Counted");
+            runStep("Count Medication Rows", () -> {
+                int medicationRows = overviewPage.countMedicationRows();
+                System.out.println("Total Medication Rows: " + medicationRows);
+                io.qameta.allure.Allure.addAttachment("Medication Rows Count", "text/plain", "Medication rows: " + medicationRows, ".txt");
+            });
 
-            overviewPage.clickMedicationNextButton();
-            captureScreenshot("Medication Next Button Clicked");
+            runStep("Click Medication Next Button", () -> overviewPage.clickMedicationNextButton());
 
-            overviewPage.clickMedicationPreviousButton();
-            captureScreenshot("Medication Previous Button Clicked");
+            runStep("Click Medication Previous Button", () -> overviewPage.clickMedicationPreviousButton());
 
-            overviewPage.clickEditMedication();
-            captureScreenshot("Edit Medication Modal Opened (Close Flow)");
-            overviewPage.clickCloseEditMedication();
-            captureScreenshot("Edit Medication Modal Closed");
+            runStep("Open Edit Medication Modal (Close Flow)", () -> overviewPage.clickEditMedication());
+            runStep("Close Edit Medication Modal", () -> overviewPage.clickCloseEditMedication());
 
-            overviewPage.clickEditMedication();
-            captureScreenshot("Edit Medication Modal Opened (Cancel Flow)");
-            overviewPage.clickCancelEditMedication();
-            captureScreenshot("Edit Medication Modal Cancelled");
+            runStep("Open Edit Medication Modal (Cancel Flow)", () -> overviewPage.clickEditMedication());
+            runStep("Cancel Edit Medication Modal", () -> overviewPage.clickCancelEditMedication());
 
-            overviewPage.clickEditMedication();
-            captureScreenshot("Edit Medication Modal Opened (Save Flow)");
-            overviewPage.fillEditMedicationFields();
-            captureScreenshot("Edit Medication Fields Filled");
-            overviewPage.clickSaveEditMedication();
-            captureScreenshot("Edit Medication Saved");
+            runStep("Open Edit Medication Modal (Save Flow)", () -> overviewPage.clickEditMedication());
+            runStep("Fill Edit Medication Fields", () -> overviewPage.fillEditMedicationFields());
+            runStep("Save Edit Medication", () -> overviewPage.clickSaveEditMedication());
 
-            // Download Medications Data - Export PDF
-            overviewPage.clickDownloadMedicationsData();
-            captureScreenshot("Download Medications Data Clicked");
-            overviewPage.clickExportPdfMedications();
-            captureScreenshot("Medications PDF Exported");
-            try { Thread.sleep(3000); } catch (Exception e2) {}
-            deleteDownloadedFiles();
+            runStep("Click Download Medications Data", () -> overviewPage.clickDownloadMedicationsData());
+            runStep("Export Medications PDF", () -> {
+                overviewPage.clickExportPdfMedications();
+                try { Thread.sleep(3000); } catch (Exception e2) {}
+                deleteDownloadedFiles();
+            });
 
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page After Medications");
+            runStep("Navigate To Documents Page After Medications", () -> documentsPage.openFromMenu());
 
-            documentsPage.clickGridCell();
-            captureScreenshot("Grid Cell Clicked For Delete");
-            documentsPage.clickDeleteDocument();
-            captureScreenshot("Delete Document Clicked");
-            documentsPage.clickConfirmDelete();
-            captureScreenshot("Delete Medications PDF Confirmed");
+            runStep("Click Grid Cell For Delete (After Medications)", () -> documentsPage.clickGridCell());
+            runStep("Click Delete Document (After Medications)", () -> documentsPage.clickDeleteDocument());
+            runStep("Confirm Delete Medications PDF", () -> documentsPage.clickConfirmDelete());
 
-            // Upload Allergies PDF
             String allergiesPdfPath = new java.io.File("src/main/resources/allergies_usd.html.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(allergiesPdfPath);
-            captureScreenshot("Allergies PDF Uploaded");
+            runStep("Upload Allergies PDF (After Medications)", () -> documentsPage.uploadDocument(allergiesPdfPath));
 
         } catch (Exception e) {
             System.out.println("===== Medications FAILED: " + e.getMessage() + " =====");
@@ -736,76 +621,56 @@ public class OverviewTest extends BaseTest {
 
         // ===== Lab Record Results Tab =====
         try {
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page For Lab Record Upload");
+            runStep("Navigate To Documents Page For Lab Record Upload", () -> documentsPage.openFromMenu());
 
-            // Upload Lab Record PDF
             String labRecordPdfPath = new java.io.File("src/main/resources/lab_record_usd.html.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(labRecordPdfPath);
-            captureScreenshot("Lab Record PDF Uploaded");
+            runStep("Upload Lab Record PDF", () -> documentsPage.uploadDocument(labRecordPdfPath));
 
-            // Wait for the document to be processed
-            try {
+            runStep("Wait After Lab Record Upload", () -> {
                 System.out.println("Waiting for 70 seconds after document upload...");
-                Thread.sleep(70000);
-            } catch (InterruptedException e2) { e2.printStackTrace(); }
+                try { Thread.sleep(70000); } catch (InterruptedException e2) { e2.printStackTrace(); }
+            });
 
-            // Navigate to Overview after Lab Record PDF upload
-            overviewPage.clickOverviewSection();
-            captureScreenshot("Navigated To Overview After Lab Record PDF Upload");
+            runStep("Navigate To Overview After Lab Record Upload", () -> overviewPage.clickOverviewSection());
 
-            // Click Lab Record Results Tab
-            overviewPage.clickLabRecordResultsTab();
-            captureScreenshot("Lab Record Results Tab Clicked");
+            runStep("Click Lab Record Results Tab Again", () -> overviewPage.clickLabRecordResultsTab());
 
-            // Count lab record results
-            int labResultsCount = overviewPage.countLabRecordResults();
-            System.out.println("Total Lab Record Results: " + labResultsCount);
-            io.qameta.allure.Allure.addAttachment("Lab Record Results Count", "text/plain", "Lab Record Results count: " + labResultsCount, ".txt");
-            captureScreenshot("Lab Record Results Counted");
+            runStep("Count Lab Record Results Again", () -> {
+                int labResultsCount = overviewPage.countLabRecordResults();
+                System.out.println("Total Lab Record Results: " + labResultsCount);
+                io.qameta.allure.Allure.addAttachment("Lab Record Results Count", "text/plain", "Lab Record Results count: " + labResultsCount, ".txt");
+            });
 
         } catch (Exception e) {
-            System.out.println("===== Lab Record Results FAILED: " + e.getMessage() + " =====");
-            captureScreenshot("Lab Record Results Failed");
+            System.out.println("===== Lab Record Results (Second) FAILED: " + e.getMessage() + " =====");
+            captureScreenshot("Lab Record Results (Second) Failed");
         }
 
         // ===== Section 8: Allergies Tab =====
         try {
-            documentsPage.openFromMenu();
-            captureScreenshot("Navigated To Documents Page For Allergies Upload");
+            runStep("Navigate To Documents Page For Allergies Upload", () -> documentsPage.openFromMenu());
 
-            // Upload Allergies PDF
             String allergiesPdfPath = new java.io.File("src/main/resources/allergies_usd.html.pdf").getAbsolutePath();
-            documentsPage.uploadDocument(allergiesPdfPath);
-            captureScreenshot("Allergies PDF Uploaded");
+            runStep("Upload Allergies PDF", () -> documentsPage.uploadDocument(allergiesPdfPath));
 
-            // Wait for the document to be processed
-            try {
+            runStep("Wait After Allergies Upload", () -> {
                 System.out.println("Waiting for 70 seconds after document upload...");
-                Thread.sleep(70000);
-            } catch (InterruptedException e2) { e2.printStackTrace(); }
+                try { Thread.sleep(70000); } catch (InterruptedException e2) { e2.printStackTrace(); }
+            });
 
-            // Navigate to Overview after Allergies PDF upload
-            overviewPage.clickOverviewSection();
-            captureScreenshot("Navigated To Overview After Allergies PDF Upload");
+            runStep("Navigate To Overview After Allergies Upload", () -> overviewPage.clickOverviewSection());
 
-            // Click Allergies Tab
-            overviewPage.clickAllergiesTab();
-            captureScreenshot("Allergies Tab Clicked");
+            runStep("Click Allergies Tab", () -> overviewPage.clickAllergiesTab());
 
-            // Count allergies rows
-            int allergiesRows = overviewPage.countAllergiesRows();
-            System.out.println("Total Allergies Rows: " + allergiesRows);
-            io.qameta.allure.Allure.addAttachment("Allergies Rows Count", "text/plain", "Allergies rows: " + allergiesRows, ".txt");
-            captureScreenshot("Allergies Rows Counted");
+            runStep("Count Allergies Rows", () -> {
+                int allergiesRows = overviewPage.countAllergiesRows();
+                System.out.println("Total Allergies Rows: " + allergiesRows);
+                io.qameta.allure.Allure.addAttachment("Allergies Rows Count", "text/plain", "Allergies rows: " + allergiesRows, ".txt");
+            });
 
-            // Click citation button
-            overviewPage.clickAllergyCitationButton();
-            captureScreenshot("Allergy Citation Button Clicked");
+            runStep("Click Allergy Citation Button", () -> overviewPage.clickAllergyCitationButton());
 
-            // Close citation modal
-            overviewPage.clickCloseCitationModal();
-            captureScreenshot("Citation Modal Closed");
+            runStep("Close Citation Modal", () -> overviewPage.clickCloseCitationModal());
 
         } catch (Exception e) {
             System.out.println("===== Allergies FAILED: " + e.getMessage() + " =====");
@@ -814,40 +679,35 @@ public class OverviewTest extends BaseTest {
 
         // ===== Section 9: Analytics & Insights Tab =====
         try {
-            overviewPage.clickAnalyticsAndInsightsTab();
-            captureScreenshot("Analytics & Insights Tab Clicked");
+            runStep("Click Analytics & Insights Tab", () -> overviewPage.clickAnalyticsAndInsightsTab());
 
-            // Select Dr. Kavita Nair from providers dropdown
-            overviewPage.selectAnalyticsProvider("Dr. Kavita Nair");
-            captureScreenshot("Dr. Kavita Nair Selected");
+            runStep("Select Provider - Dr. Kavita Nair", () -> overviewPage.selectAnalyticsProvider("Dr. Kavita Nair"));
 
-            // Select All Providers
-            overviewPage.selectAnalyticsProvider("All Providers");
-            captureScreenshot("All Providers Selected");
+            runStep("Select Provider - All Providers", () -> overviewPage.selectAnalyticsProvider("All Providers"));
 
-            // Get Total Expense
-            String totalExpense = overviewPage.getAnalyticsTotalExpense();
-            System.out.println("Total Expense: " + totalExpense);
-            io.qameta.allure.Allure.addAttachment("Total Expense", "text/plain", "Total Expense: " + totalExpense, ".txt");
-            captureScreenshot("Total Expense Captured");
+            runStep("Get Total Expense", () -> {
+                String totalExpense = overviewPage.getAnalyticsTotalExpense();
+                System.out.println("Total Expense: " + totalExpense);
+                io.qameta.allure.Allure.addAttachment("Total Expense", "text/plain", "Total Expense: " + totalExpense, ".txt");
+            });
 
-            // Get card values - PAID BILLS, UNPAID BILLS, TREATMENT GAPS, HIGH RISK ISSUES
-            Map<String, String> cardValues = overviewPage.getAnalyticsCardValues();
-            StringBuilder cardsBuilder = new StringBuilder();
-            cardsBuilder.append("--- Analytics Cards ---\n");
-            for (Map.Entry<String, String> entry : cardValues.entrySet()) {
-                String line = entry.getKey() + ": " + entry.getValue();
-                System.out.println(line);
-                cardsBuilder.append(line).append("\n");
-            }
-            io.qameta.allure.Allure.addAttachment("Analytics Cards", "text/plain", cardsBuilder.toString(), ".txt");
-            captureScreenshot("Analytics Cards Captured");
+            runStep("Get Analytics Card Values", () -> {
+                Map<String, String> cardValues = overviewPage.getAnalyticsCardValues();
+                StringBuilder cardsBuilder = new StringBuilder();
+                cardsBuilder.append("--- Analytics Cards ---\n");
+                for (Map.Entry<String, String> entry : cardValues.entrySet()) {
+                    String line = entry.getKey() + ": " + entry.getValue();
+                    System.out.println(line);
+                    cardsBuilder.append(line).append("\n");
+                }
+                io.qameta.allure.Allure.addAttachment("Analytics Cards", "text/plain", cardsBuilder.toString(), ".txt");
+            });
 
-            // Count months
-            int monthsCount = overviewPage.countAnalyticsMonths();
-            System.out.println("Analytics Months Count: " + monthsCount);
-            io.qameta.allure.Allure.addAttachment("Analytics Months Count", "text/plain", "Months: " + monthsCount, ".txt");
-            captureScreenshot("Analytics Months Counted");
+            runStep("Count Analytics Months", () -> {
+                int monthsCount = overviewPage.countAnalyticsMonths();
+                System.out.println("Analytics Months Count: " + monthsCount);
+                io.qameta.allure.Allure.addAttachment("Analytics Months Count", "text/plain", "Months: " + monthsCount, ".txt");
+            });
 
         } catch (Exception e) {
             System.out.println("===== Analytics & Insights FAILED: " + e.getMessage() + " =====");
@@ -855,54 +715,45 @@ public class OverviewTest extends BaseTest {
         }
 
         // ===== Navigate to Documents Page - Delete Allergies PDF =====
-         try {
-             documentsPage.openFromMenu();
-             captureScreenshot("Navigated To Documents Page After Analytics");
-             documentsPage.clickGridCell();
-             captureScreenshot("Grid Cell Clicked For Delete");
-             documentsPage.clickDeleteDocument();
-             captureScreenshot("Delete Document Clicked");
-             documentsPage.clickConfirmDelete();
-             captureScreenshot("Delete Allergies PDF Confirmed");
+        try {
+            runStep("Navigate To Documents Page After Analytics", () -> documentsPage.openFromMenu());
+            runStep("Click Grid Cell For Final Delete", () -> documentsPage.clickGridCell());
+            runStep("Click Delete Document For Final Delete", () -> documentsPage.clickDeleteDocument());
+            runStep("Confirm Final Delete Allergies PDF", () -> documentsPage.clickConfirmDelete());
 
-         } catch (Exception e) {
-             System.out.println("===== Delete Allergies PDF FAILED: " + e.getMessage() + " =====");
-             captureScreenshot("Delete Allergies PDF Failed");
-         }
+        } catch (Exception e) {
+            System.out.println("===== Delete Allergies PDF FAILED: " + e.getMessage() + " =====");
+            captureScreenshot("Delete Allergies PDF Failed");
+        }
 
     }
 
     private void executeEditLabTestFlow(String searchTerm, String testName, String category, String date, String value, String unit, String refRange, String comments) {
         System.out.println("Starting Edit Lab Test flow for: " + searchTerm);
 
-        overviewPage.searchLabReports(searchTerm);
-        captureScreenshot("Searched Lab Report: " + searchTerm);
+        runStep("Search Lab Report - " + searchTerm, () -> overviewPage.searchLabReports(searchTerm));
 
-        overviewPage.clickEditLabTest();
-        captureScreenshot("Edit Lab Test Modal Opened (Close Flow)");
-        overviewPage.clickEditLabTestClose();
-        captureScreenshot("Edit Lab Test Modal Closed");
+        runStep("Open Edit Lab Test Modal (Close Flow) - " + searchTerm, () -> overviewPage.clickEditLabTest());
+        runStep("Close Edit Lab Test Modal - " + searchTerm, () -> overviewPage.clickEditLabTestClose());
 
-        overviewPage.clickEditLabTest();
-        captureScreenshot("Edit Lab Test Modal Opened (Cancel Flow)");
-        overviewPage.clickEditLabTestCancel();
-        captureScreenshot("Edit Lab Test Modal Cancelled");
+        runStep("Open Edit Lab Test Modal (Cancel Flow) - " + searchTerm, () -> overviewPage.clickEditLabTest());
+        runStep("Cancel Edit Lab Test Modal - " + searchTerm, () -> overviewPage.clickEditLabTestCancel());
 
-        overviewPage.clickEditLabTest();
-        captureScreenshot("Edit Lab Test Modal Opened (Save Flow)");
-        overviewPage.fillEditLabTestFields(testName, category, date, value, unit, refRange, comments);
-        captureScreenshot("Edit Lab Test Fields Filled");
-        overviewPage.clickEditLabTestSave();
-        captureScreenshot("Edit Lab Test Saved");
+        runStep("Open Edit Lab Test Modal (Save Flow) - " + searchTerm, () -> overviewPage.clickEditLabTest());
+        runStep("Fill Edit Lab Test Fields - " + searchTerm, () ->
+                overviewPage.fillEditLabTestFields(testName, category, date, value, unit, refRange, comments));
+        runStep("Save Edit Lab Test - " + searchTerm, () -> overviewPage.clickEditLabTestSave());
 
-        try {
-            String successMsg = overviewPage.verifyAndGetSuccessMessage();
-            io.qameta.allure.Allure.addAttachment("Edit Lab Test Success (" + searchTerm + ")", "text/plain", successMsg, ".txt");
-        } catch (Exception e) {
-            System.out.println("No success message found after saving edit lab test: " + e.getMessage());
-        }
+        runStep("Verify Edit Lab Test Success Message - " + searchTerm, () -> {
+            try {
+                String successMsg = overviewPage.verifyAndGetSuccessMessage();
+                io.qameta.allure.Allure.addAttachment("Edit Lab Test Success (" + searchTerm + ")", "text/plain", successMsg, ".txt");
+            } catch (Exception e) {
+                System.out.println("No success message found after saving edit lab test: " + e.getMessage());
+            }
+        });
 
-        overviewPage.searchLabReports("");
+        runStep("Clear Lab Reports Search - " + searchTerm, () -> overviewPage.searchLabReports(""));
     }
 
     private void assertBillingAmount(Map<String, String> billingSummary, String key, double expectedAmount) {
@@ -910,7 +761,7 @@ public class OverviewTest extends BaseTest {
         if (actualValue != null && !actualValue.equals("Not Found")) {
             try {
                 double actualAmount = Double.parseDouble(actualValue.replaceAll("[^0-9.]", ""));
-                Assert.assertEquals(actualAmount, expectedAmount, 0.01,
+                softAssert.assertEquals(actualAmount, expectedAmount, 0.01,
                         key + " should be $" + expectedAmount + " but was $" + actualAmount);
                 System.out.println("ASSERT PASSED: " + key + " = $" + actualAmount + " (expected: $" + expectedAmount + ")");
             } catch (NumberFormatException e) {

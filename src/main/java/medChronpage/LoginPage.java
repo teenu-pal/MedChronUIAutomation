@@ -74,6 +74,7 @@ public class LoginPage {
      */
     public void login(String email, String password) {
         enterEmail(email);
+
         enterPassword(password);
         clickLoginButton();
     }

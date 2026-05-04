@@ -47,7 +47,21 @@
       "Bash(tee /tmp/timeline-run.log)",
       "Bash(grep -E \"Step |Status |Skip|skipped|ok$\")",
       "Bash(tee /tmp/timeline-run-2.log)",
-      "Bash(grep -E \"Step |Status |Skip|skipped|ok$|Timeline|Patient|fail|FAIL|Error\")"
+      "Bash(grep -E \"Step |Status |Skip|skipped|ok$|Timeline|Patient|fail|FAIL|Error\")",
+      "Bash(./mvnw -q test-compile)",
+      "Bash(xargs cat *)",
+      "Bash(grep -E \"txt$|xml$\")",
+      "Bash(awk '{print $NF}')",
+      "Bash(xargs tail *)",
+      "Bash(awk '{print $3}')",
+      "Bash(xargs grep *)",
+      "Bash(grep -oE 'class=\"[^\"]*clear[^\"]*\"|>Clear[^<]{0,40}<' \"target/error_page_dump_Clear_Injury_Filters_Button.html\")",
+      "Bash(tasklist)",
+      "Bash(tasklist /FI \"IMAGENAME eq chrome.exe\" /FO TABLE)",
+      "Bash(tasklist /FI \"IMAGENAME eq chromedriver.exe\" /FO TABLE)",
+      "PowerShell(Get-Process *)",
+      "Bash(mvn -q test-compile)",
+      "PowerShell(mvn *)"
     ]
   }
 }

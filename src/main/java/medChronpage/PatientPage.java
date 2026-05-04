@@ -279,6 +279,7 @@ public class PatientPage {
     public void searchPatient(String searchTerm) {
         try {
             Thread.sleep(1000);
+            waitForModalBackdropToClear();
             List<By> searchLocators = List.of(
                     By.xpath("//input[@placeholder='Search' or @placeholder='Search patients' or @placeholder='Search Patients']"),
                     By.xpath("//input[contains(@placeholder,'Search') or contains(@placeholder,'search')]"),
@@ -447,6 +448,7 @@ public class PatientPage {
                 By.xpath("//button[@type='submit']")
         );
         clickFirstAvailable(locators, "Save Patient button");
+        waitForModalBackdropToClear();
     }
 
     public void clickDeletePatient() {
@@ -699,6 +701,30 @@ public class PatientPage {
         }
         driver.switchTo().defaultContent();
         return false;
+    }
+
+    private void waitForModalBackdropToClear() {
+        String selector = "div.modalBackdrop, div[class*='modalBackdrop'], div.modalOverlay, div[class*='modalOverlay']";
+        By backdrop = By.cssSelector(selector);
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(
+                    ExpectedConditions.invisibilityOfElementLocated(backdrop));
+            return;
+        } catch (Exception ignored) {}
+        try {
+            new org.openqa.selenium.interactions.Actions(driver).sendKeys(Keys.ESCAPE).perform();
+            Thread.sleep(500);
+        } catch (Exception ignored) {}
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(2)).until(
+                    ExpectedConditions.invisibilityOfElementLocated(backdrop));
+            return;
+        } catch (Exception ignored) {}
+        try {
+            ((JavascriptExecutor) driver).executeScript(
+                    "document.querySelectorAll('div.modalBackdrop, div[class*=\"modalBackdrop\"], div.modalOverlay, div[class*=\"modalOverlay\"]').forEach(function(b){b.remove();});");
+            System.out.println("Force-removed lingering modal backdrop/overlay via JS.");
+        } catch (Exception ignored) {}
     }
 
     private void clickFirstAvailable(List<By> locators, String elementName) {

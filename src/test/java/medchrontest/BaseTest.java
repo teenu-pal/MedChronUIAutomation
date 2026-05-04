@@ -11,12 +11,17 @@ import medChronpage.OverviewPage;
 import medChronpage.TimelinePage;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.testng.asserts.SoftAssert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import java.io.ByteArrayInputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class BaseTest extends BaseLibrary {
 
@@ -27,6 +32,49 @@ public class BaseTest extends BaseLibrary {
     protected static DocumentsPage documentsPage;
     protected static OverviewPage overviewPage;
     protected static TimelinePage timelinePage;
+
+    protected SoftAssert softAssert;
+
+    @BeforeMethod(alwaysRun = true)
+    public void initSoftAssert() {
+        softAssert = new SoftAssert();
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void verifyAllSoftAssertions() {
+        if (softAssert != null) {
+            softAssert.assertAll();
+        }
+    }
+
+    protected void runStep(String stepName, Runnable action) {
+        try {
+            action.run();
+            captureScreenshot(stepName);
+        } catch (Throwable t) {
+            StringBuilder location = new StringBuilder();
+            for (StackTraceElement frame : t.getStackTrace()) {
+                String cls = frame.getClassName();
+                if (cls.startsWith("medchrontest.") || cls.startsWith("medChronpage.") || cls.startsWith("baselibrary.")) {
+                    location.append("\n   at ").append(frame);
+                }
+            }
+            String msg = "Step '" + stepName + "' FAILED: " + t.getClass().getSimpleName() + ": " + t.getMessage();
+            System.out.println("===== " + msg + " =====");
+            if (location.length() > 0) {
+                System.out.println("   Failed in user code:" + location);
+            } else {
+                System.out.println("   (no user-code frame found in stack trace)");
+            }
+            captureScreenshot(stepName + " - FAILED");
+            StringWriter sw = new StringWriter();
+            t.printStackTrace(new PrintWriter(sw));
+            Allure.addAttachment(stepName + " - Error", "text/plain", msg + location + "\n\n" + sw.toString(), ".txt");
+            if (softAssert != null) {
+                softAssert.fail(msg + location);
+            }
+        }
+    }
 
     @BeforeSuite(alwaysRun = true)
     @Parameters({"browser"})
